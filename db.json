@@ -1,0 +1,141 @@
+{
+  "category": [
+    {
+      "id_category": 1,
+      "name_category": "Ropa Deportiva Dama",
+      "image": "src/assets/my_images/category/gerardo-marrufo-zy_0bbpbvBU-unsplash.jpg"
+    },
+    {
+      "id_category": 2,
+      "name_category": "Ropa Deportiva Caballero",
+      "image": "src/assets/my_images/category/ashkan-forouzani-zZizuTAJ8HU-unsplash.jpg"
+    },
+    {
+      "id_category": 3,
+      "name_category": "Morralería",
+      "image": "src/assets/my_images/category/wiser-by-the-mile-1Frndjy7tkM-unsplash.jpg"
+    },
+    {
+      "id_category": 4,
+      "name_category": "Zapato AAA",
+      "image": "src/assets/my_images/category/scott-elkins-W-C4JRidLPc-unsplash.jpg"
+    }
+  ],
+  "product": [
+    {
+      "id_product": 1,
+      "description": "Leggins Deportivos Mujer",
+      "price_sale": 40.0,
+      "cost_price": 25.0,
+      "stock": 75,
+      "id_category": 1
+    },
+    {
+      "id_product": 2,
+      "description": "short push up marmol",
+      "price_sale": 40.0,
+      "cost_price": 25.0,
+      "stock": 75,
+      "id_category": 1
+    },
+    {
+      "id_product": 3,
+      "description": "enterizo de short",
+      "price_sale": 40.0,
+      "cost_price": 25.0,
+      "stock": 75,
+      "id_category": 1
+    },
+    {
+      "id_product": 4,
+      "description": "vestido deportivo",
+      "price_sale": 40.0,
+      "cost_price": 25.0,
+      "stock": 75,
+      "id_category": 1
+    },
+
+    {
+      "id_product": 5,
+      "description": "sudadera deportiva manga larga hombre",
+      "price_sale": 40.0,
+      "cost_price": 25.0,
+      "stock": 75,
+      "id_category": 2
+    },
+    {
+      "id_product": 6,
+      "description": "Camiseta Deportiva Hombre",
+      "price_sale": 35.0,
+      "cost_price": 20.0,
+      "stock": 100,
+      "id_category": 2
+    },
+    {
+      "id_product": 7,
+      "description": "short depor con licra interna",
+      "price_sale": 35.0,
+      "cost_price": 20.0,
+      "stock": 100,
+      "id_category": 2
+    },
+    {
+      "id_product": 8,
+      "description": "flanelillas",
+      "price_sale": 35.0,
+      "cost_price": 20.0,
+      "stock": 100,
+      "id_category": 2
+    },
+
+    {
+      "id_product": 9,
+      "description": "Morral ejecutivo",
+      "price_sale": 45.0,
+      "cost_price": 30.0,
+      "stock": 60,
+      "id_category": 3
+    },
+    {
+      "id_product": 10,
+      "description": "Morral escolar",
+      "price_sale": 45.0,
+      "cost_price": 30.0,
+      "stock": 60,
+      "id_category": 3
+    },
+    {
+      "id_product": 11,
+      "description": "Morral de gymnasio",
+      "price_sale": 45.0,
+      "cost_price": 30.0,
+      "stock": 60,
+      "id_category": 3
+    },
+
+    {
+      "id_product": 12,
+      "description": "adidas bad bonny",
+      "price_sale": 120.0,
+      "cost_price": 80.0,
+      "stock": 30,
+      "id_category": 4
+    },
+    {
+      "id_product": 13,
+      "description": "nike travis scott",
+      "price_sale": 45.0,
+      "cost_price": 30.0,
+      "stock": 60,
+      "id_category": 4
+    },
+    {
+      "id_product": 14,
+      "description": "jordan retro 3 j balvin",
+      "price_sale": 45.0,
+      "cost_price": 30.0,
+      "stock": 60,
+      "id_category": 4
+    }
+  ]
+}

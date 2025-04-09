@@ -17,6 +17,20 @@ import {
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 
 const _nav = [
+  //my nav camila
+  {
+    component: CNavItem,
+    name: 'Users',
+    to: '/Users',
+    icon: <CIcon icon={cilDrop} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: 'Products',
+    to: '/products',
+    icon: <CIcon icon={cilDrop} customClassName="nav-icon" />,
+  },
+  // end my nav camila
   {
     component: CNavItem,
     name: 'Dashboard',
