@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { CTable } from "@coreui/react";
-import "./Ventas.css";
+import "./Sale.css";
 
-const Ventas = () => {
+const Sales = () => {
   const columns = [
     { key: "id", label: "#" },
     { key: "class", label: "Seller" },
@@ -13,16 +13,16 @@ const Ventas = () => {
   ];
 
   const initialItems = [
-        { id: 10, class: "David", total: "500,00", date: "06/04/2025", status: "Paid", viewMore: "View more" },
-        { id: 9, class: "Olivia", total: "320,00", date: "05/04/2025", status: "Paid", viewMore: "View more" },
-        { id: 8, class: "Chris", total: "120,00", date: "04/04/2025", status: "Paid", viewMore: "View more" },
-        { id: 7, class: "Emma", total: "200,00", date: "04/04/2025", status: "Paid", viewMore: "View more" },
-        { id: 6, class: "Michael", total: "450,00", date: "04/04/2025", status: "Pending", viewMore: "View more" },
-        { id: 5, class: "Sarah", total: "300,00", date: "03/04/2025", status: "Paid", viewMore: "View more" },
-        { id: 4, class: "Joe", total: "100,00", date: "03/04/2025", status: "Paid", viewMore: "View more" },
-        { id: 3, class: "Allison", total: "250,00", date: "02/04/2025", status: "Paid", viewMore: "View more" },
-        { id: 2, class: "Frank", total: "50,00", date: "02/04/2025", status: "Paid", viewMore: "View more" },
-        { id: 1, class: "Matt", total: "140,00", date: "02/04/2025", status: "Paid", viewMore: "View more" },
+        { id: 10, class: "David", total: "500,00", date: "2025-04-06", status: "Paid", viewMore: "View more" },
+        { id: 9, class: "Olivia", total: "320,00", date: "2025-04-05", status: "Paid", viewMore: "View more" },
+        { id: 8, class: "Chris", total: "120,00", date: "2025-04-04", status: "Paid", viewMore: "View more" },
+        { id: 7, class: "Emma", total: "200,00", date: "2025-04-04", status: "Paid", viewMore: "View more" },
+        { id: 6, class: "Michael", total: "450,00", date: "2025-04-04", status: "Pending", viewMore: "View more" },
+        { id: 5, class: "Sarah", total: "300,00", date: "2025-04-03", status: "Paid", viewMore: "View more" },
+        { id: 4, class: "Joe", total: "100,00", date: "2025-04-03", status: "Paid", viewMore: "View more" },
+        { id: 3, class: "Allison", total: "250,00", date: "2025-04-02", status: "Paid", viewMore: "View more" },
+        { id: 2, class: "Frank", total: "50,00", date: "2025-04-02", status: "Paid", viewMore: "View more" },
+        { id: 1, class: "Matt", total: "140,00", date: "2025-04-02", status: "Paid", viewMore: "View more" },
       ];
 
   const [items, setItems] = useState(initialItems);
@@ -149,4 +149,4 @@ const handleSubmit = (event) => {
   );
 };
 
-export default Ventas;
+export default Sales;

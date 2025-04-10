@@ -18,15 +18,15 @@ import { cilLockLocked, cilUser } from '@coreui/icons'
 
 const Login = () => {
   return (
-    <div className="bg-body-tertiary min-vh-100 d-flex flex-row align-items-center">
+    <div className="bg-body-tertiary min-vh-100 d-flex flex-row align-items-center" style={{background: ' #000000'}}>
       <CContainer>
         <CRow className="justify-content-center">
-          <CCol md={8}>
+          <CCol md={9}>
             <CCardGroup>
-              <CCard className="p-4">
+              <CCard className="p-4" style={{background: ' #0D0D0D'}}>
                 <CCardBody>
                   <CForm>
-                    <h1>Login</h1>
+                    <h1 className='text-white'>Login</h1>
                     <p className="text-body-secondary">Sign In to your account</p>
                     <CInputGroup className="mb-3">
                       <CInputGroupText>
@@ -46,12 +46,12 @@ const Login = () => {
                     </CInputGroup>
                     <CRow>
                       <CCol xs={6}>
-                        <CButton color="primary" className="px-4">
+                        <CButton color="primary" className="px-4" style={{background:"rgb(9, 9, 34)"}}>
                           Login
                         </CButton>
                       </CCol>
-                      <CCol xs={6} className="text-right">
-                        <CButton color="link" className="px-0">
+                      <CCol xs={6} className="text-right" >
+                        <CButton color="link" className="px-0, text-white">
                           Forgot password?
                         </CButton>
                       </CCol>
@@ -59,7 +59,7 @@ const Login = () => {
                   </CForm>
                 </CCardBody>
               </CCard>
-              <CCard className="text-white bg-primary py-5" style={{ width: '44%' }}>
+              <CCard className="text-white  py-5" style={{ background: 'linear-gradient(to bottom,rgb(134, 12, 190) 10%,rgb(80, 18, 100) 90%', width: '44%' }}>
                 <CCardBody className="text-center">
                   <div>
                     <h2>Sign up</h2>
@@ -68,7 +68,7 @@ const Login = () => {
                       tempor incididunt ut labore et dolore magna aliqua.
                     </p>
                     <Link to="/register">
-                      <CButton color="primary" className="mt-3" active tabIndex={-1}>
+                      <CButton  className="mt-3" style={{background:"rgb(9, 9, 34)"}} active tabIndex={-1}>
                         Register Now!
                       </CButton>
                     </Link>
