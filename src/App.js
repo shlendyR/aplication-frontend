@@ -10,6 +10,8 @@ import './scss/style.scss'
 import './scss/examples.scss'
 
 //my rutes camila
+const UserAdmin = React.lazy(() => import('./views/users/UserAdmin.js'))
+const User = React.lazy(() => import('./views/users/users.js'))
 const CategoryProducts = React.lazy(() => import('./views/products/CategoryProducts'))
 const Product = React.lazy(() => import('./views/products/products.js'))
 // Containers
@@ -62,6 +64,8 @@ const App = () => {
             element={<CategoryProducts />}
           />
           <Route path="/products" element={<Product />} />
+          <Route path="/users" element={<User />} />
+          <Route exact path="/users/role/:id" name="user type" element={<UserAdmin />} />
         </Routes>
       </Suspense>
     </HashRouter>

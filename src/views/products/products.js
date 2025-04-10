@@ -34,30 +34,32 @@ const Products = () => {
 
   return (
     <div>
-      <h1 className="mb-4">Productos de Inventario</h1>
-      <CRow>
-        {categories.map((category) => (
-          <CCol sm="6" md="4" lg="3" key={category.id_category} className="mb-4">
-            <CCard>
-              <CCardImage
-                orientation="top"
-                src={category.image || 'https://via.placeholder.com/150'}
-                alt={category.name_category}
-              />
-              <CCardHeader>{category.name_category}</CCardHeader>
-              <CCardBody>
-                <CCardTitle>ID: {category.id_category}</CCardTitle>
-                <CButton
-                  color="primary"
-                  onClick={() => navigate(`/products/category/${category.id_category}`)}
-                >
-                  Ver detalles
-                </CButton>
-              </CCardBody>
-            </CCard>
-          </CCol>
-        ))}
-      </CRow>
+      <CCard className="mb-4">
+        <CCardHeader>Productos de Inventario</CCardHeader>
+        <CRow>
+          {categories.map((category) => (
+            <CCol sm="6" md="4" lg="3" key={category.id_category} className="mb-4">
+              <CCard>
+                <CCardImage
+                  orientation="top"
+                  src={category.image || 'https://via.placeholder.com/150'}
+                  alt={category.name_category}
+                />
+                <CCardHeader>{category.name_category}</CCardHeader>
+                <CCardBody>
+                  <CCardTitle>ID: {category.id_category}</CCardTitle>
+                  <CButton
+                    color="primary"
+                    onClick={() => navigate(`/products/category/${category.id_category}`)}
+                  >
+                    Ver detalles
+                  </CButton>
+                </CCardBody>
+              </CCard>
+            </CCol>
+          ))}
+        </CRow>
+      </CCard>
     </div>
   )
 }

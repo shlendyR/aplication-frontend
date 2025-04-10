@@ -137,5 +137,37 @@
       "stock": 60,
       "id_category": 4
     }
+  ],
+  "role": [
+    {
+      "id_role": 1,
+      "name_role": "admin",
+      "image": "src/assets/my_images/category/user/images-users/undraw_finance-guy-avatar_vhop.svg"
+    },
+    {
+      "id_role": 2,
+      "name_role": "pesales staff",
+      "image": "src/assets/my_images/category/user/images-users/undraw_young-man-avatar_wgbd (1).svg"
+    }
+  ],
+  "user": [
+    {
+      "id_user": 1,
+      "user_name": "Carlos Pérez",
+      "email": "carlos.perez@example.com",
+      "password": 123456,
+      "phone": "04141234567",
+      "birthdate": "1990-05-15",
+      "id_role": 1
+    },
+    {
+      "id_user": 2,
+      "user_name": "Carlos Pérez",
+      "email": "carlos.perez@example.com",
+      "password": 123456,
+      "phone": "04141234567",
+      "birthdate": "1990-05-15",
+      "id_role": 2
+    }
   ]
 }
