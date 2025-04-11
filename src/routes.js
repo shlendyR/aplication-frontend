@@ -4,7 +4,8 @@ import React from 'react'
 const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
 const Colors = React.lazy(() => import('./views/theme/colors/Colors'))
 const Typography = React.lazy(() => import('./views/theme/typography/Typography'))
-const Ventas = React.lazy(() => import ('./views/Ventas/Sales.js'))
+const Sales = React.lazy(() => import ('./views/Sales/Sales.js'))
+const investment = React.lazy(() => import ('./views/investment/investment.js'))
 
 // Base
 const Accordion = React.lazy(() => import('./views/base/accordion/Accordion'))
@@ -54,7 +55,8 @@ const Toasts = React.lazy(() => import('./views/notifications/toasts/Toasts'))
 const Widgets = React.lazy(() => import('./views/widgets/Widgets'))
 
 const routes = [
-    { path: '/Sales', name: 'Sales', element: Ventas },
+  { path: '/Sales', name: 'Sales', element: Sales },
+  { path: '/investment', name: 'investment', element: investment },
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
   { path: '/theme', name: 'Theme', element: Colors, exact: true },

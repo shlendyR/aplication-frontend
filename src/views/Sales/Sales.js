@@ -1,6 +1,8 @@
 import React, { useState } from "react";
-import { CTable } from "@coreui/react";
-import "./Sale.css";
+import { CModal, CModalHeader, CTable } from "@coreui/react";
+import "./Sale.scss";
+import {Modal} from "@coreui/coreui";
+import { CModalBody,CModalFooter,CButton} from '@coreui/react';
 
 const Sales = () => {
   const columns = [
@@ -32,6 +34,8 @@ const Sales = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [editId, setEditId] = useState(null);
 
+  const [visible,setvisible]=useState(false)
+  const [visible2,setvisible2]=useState(false)
 
   const handleSearch = (event) => {
     const value = event.target.value.toLowerCase();
@@ -54,7 +58,9 @@ const Sales = () => {
 
 const handleSubmit = (event) => {
     event.preventDefault();
-  
+
+    console.log("Filtered items actualizados:", filteredItems);
+
     if (isEditing) {
       const updatedItems = items.map((item) =>
         item.id === editId ? { ...item, ...newRecord } : item
@@ -64,15 +70,21 @@ const handleSubmit = (event) => {
       setIsEditing(false);
       setEditId(null);
     } else {
-    const newId = items.length > 0 ? Math.max(...items.map((item) => item.id)) + 1 : 1;
-    const newItem = { ...newRecord, id: newId };
-
+      const newId = items.length > 0 ? Math.max(...items.map((item) => item.id)) + 1 : 1;
+      const newItem = { ...newRecord, id: newId };
+      
+      console.log("Nuevo registro:", newItem);
+      console.log("Items actualizados:", [newItem, ...items]);
     
     setItems([newItem, ...items]);
     setFilteredItems([newItem, ...items]);
+
+    console.log("Filtered items actualizados:", filteredItems);
   }
   
-    setNewRecord({ id: "", class: "", total: "", date: "", status: "" });
+  setNewRecord({ id: "", class: "", total: "", date: "", status: "" });
+  
+  setvisible(false);
   };
 
   const handleDelete = (id) => {
@@ -81,17 +93,90 @@ const handleSubmit = (event) => {
     setFilteredItems(updatedItems);
   };
 
+  const handleAddRecord = () => {
+    setNewRecord({ id: "", class: "", total: "", date: "", status: "" }); // Limpia el formulario
+    setIsEditing(false); // Asegúrate de que no estás en modo edición
+    setvisible(true); // Abre el modal
+  };
 
   const handleEdit = (id) => {
     const recordToEdit = items.find((item) => item.id === id);
     setNewRecord(recordToEdit);
     setIsEditing(true);
     setEditId(id);
+    setvisible(true);
   };
 
   return (
+
+    <>
+
     <div>
       <h1 className="title">Sales History</h1>
+     
+      <button onClick={handleAddRecord} className="m_button">
+        Add Record
+      </button>
+
+      <CModal visible={visible} onClose={()=>setvisible(false)}>
+        <CModalHeader>
+            <h2 className="title2">Add New Record</h2>
+        </CModalHeader>
+        <CModalBody>
+
+            <form onSubmit={handleSubmit}>
+            <input
+              className="b_seller"
+              type="text"
+              name="class"
+              placeholder="Seller"
+              value={newRecord.class}
+              onChange={handleInputChange}
+              
+            />
+
+            <input
+            className="b_total"
+              type="text"
+              name="total"
+              placeholder="Total"
+              value={newRecord.total}
+              onChange={handleInputChange}
+              
+            />
+
+            <input
+            className="b_date"
+              type="date"
+              name="date"
+              placeholder="Date"
+              value={newRecord.date}
+              onChange={handleInputChange}
+              
+            />
+
+            <input
+            className="b_status"
+              type="text"
+              name="status"
+              placeholder="Status"
+              value={newRecord.status}
+              onChange={handleInputChange}
+            
+            />
+           
+          </form>
+
+        </CModalBody>​​
+        < CModalFooter >
+        <CButton  className="b_close"color="secondary" onClick={() => setvisible(false)}> Close </ CButton > 
+          
+          <CButton className="b_save" type="submit" >save changes</ CButton > 
+        </CModalFooter >
+
+      </CModal>
+
+
       <input
         className="search-bar"
         type="text"
@@ -99,54 +184,28 @@ const handleSubmit = (event) => {
         value={searchTerm}
         onChange={handleSearch}
       />
+
       <CTable
         columns={columns}
         items={filteredItems.map((item) => ({
           ...item,
           actions: (
             <>
-              <button onClick={() => handleEdit(item.id)} style={{ marginRight: "10px" }}>
+              <button
+                onClick={() => handleEdit(item.id)}  style={{ marginRight: "10px",background:"rgba(46, 6, 99, 0.31)", border: "solid 1px #000000", borderRadius:"5px"}}>
                 Edit
               </button>
-              <button onClick={() => handleDelete(item.id)}>Delete</button>
+
+              <button onClick={() => handleDelete(item.id)} style={{ background:"rgba(46, 6, 99, 0.31)", border: "solid 1px #000000", borderRadius:"5px"}}>Delete</button>
             </>
           ),
         }))}
       />
-      <h2>{isEditing ? "Edit Record" : "Add New Record"}</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="class"
-          placeholder="Seller"
-          value={newRecord.class}
-          onChange={handleInputChange}
-        />
-        <input
-          type="text"
-          name="total"
-          placeholder="Total"
-          value={newRecord.total}
-          onChange={handleInputChange}
-        />
-        <input
-          type="date"
-          name="date"
-          placeholder="Date"
-          value={newRecord.date}
-          onChange={handleInputChange}
-        />
-        <input
-          type="text"
-          name="status"
-          placeholder="Status"
-          value={newRecord.status}
-          onChange={handleInputChange}
-        />
-        <button type="submit">{isEditing ? "Update" : "Add"}</button>
-      </form>
+      
     </div>
+    </>
   );
 };
+
 
 export default Sales;
