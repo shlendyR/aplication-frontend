@@ -94,9 +94,9 @@ const handleSubmit = (event) => {
   };
 
   const handleAddRecord = () => {
-    setNewRecord({ id: "", class: "", total: "", date: "", status: "" }); // Limpia el formulario
-    setIsEditing(false); // Asegúrate de que no estás en modo edición
-    setvisible(true); // Abre el modal
+    setNewRecord({ id: "", class: "", total: "", date: "", status: "" });
+    setIsEditing(false);
+    setvisible(true); 
   };
 
   const handleEdit = (id) => {
