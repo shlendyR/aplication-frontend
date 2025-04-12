@@ -1,13 +1,19 @@
+import { element } from 'prop-types'
 import React from 'react'
 
 const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
 const Colors = React.lazy(() => import('./views/theme/colors/Colors'))
 const Typography = React.lazy(() => import('./views/theme/typography/Typography'))
+<<<<<<< HEAD
 //my rutes camila
 const Users = React.lazy(() => import('./views/users/users'))
 const products = React.lazy(() => import('./views/products/products'))
 const setting = React.lazy(() => import('./views/setting/setting'))
 const categoryproducts = React.lazy(() => import('./views/products/CategoryProducts'))
+=======
+const Sales = React.lazy(() => import ('./views/Sales/Sales.js'))
+const investment = React.lazy(() => import ('./views/investment/investment.js'))
+>>>>>>> 844638f6c498e3fc37c04bec6867c4f6aaf439b6
 
 // Base
 const Accordion = React.lazy(() => import('./views/base/accordion/Accordion'))
@@ -58,6 +64,8 @@ const Widgets = React.lazy(() => import('./views/widgets/Widgets'))
 const Login = React.lazy(() => import('./views/pages/login/Login'))
 
 const routes = [
+  { path: '/Sales', name: 'Sales', element: Sales },
+  { path: '/investment', name: 'investment', element: investment },
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
   { path: '/theme', name: 'Theme', element: Colors, exact: true },
