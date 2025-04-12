@@ -18,6 +18,9 @@ import {
   CModalBody,
   CModalFooter,
   CFormInput,
+  CContainer,
+  CForm,
+  CNavbar,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilPeople, cilPencil, cilTrash, cilCloudDownload } from '@coreui/icons'
@@ -102,10 +105,19 @@ const UserAdmin = () => {
   return (
     <CCard className="mb-4">
       <CCardHeader>
-        Users{' '}
         <CButton color="primary" className="float-end">
           <CIcon icon={cilCloudDownload} />
         </CButton>
+        <CNavbar className="bg-body-tertiary">
+          <CContainer fluid>
+            <CForm className="d-flex">
+              <CFormInput type="search" className="me-2" placeholder="Search" />
+              <CButton type="submit" color="success" variant="outline">
+                Search
+              </CButton>
+            </CForm>
+          </CContainer>
+        </CNavbar>
       </CCardHeader>
       <CCardBody>
         <CTable align="middle" className="mb-0 border" hover responsive>

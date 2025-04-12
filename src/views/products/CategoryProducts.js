@@ -31,22 +31,26 @@ const CategoryProducts = () => {
     <div>
       <h1 className="mb-4">Productos de la Categoría {id}</h1>
       <CRow>
-        {products.map((product) => (
-          <CCol sm="6" md="4" lg="3" key={product.id_product} className="mb-4">
-            <CCard>
-              <CCardImage
-                orientation="top"
-                src="https://via.placeholder.com/150" // Puedes agregar imágenes reales aquí
-                alt={product.description}
-              />
-              <CCardHeader>{product.description}</CCardHeader>
-              <CCardBody>
-                <CCardTitle>Precio: ${product.price_sale.toFixed(2)}</CCardTitle>
-                <p>Stock: {product.stock}</p>
-              </CCardBody>
-            </CCard>
-          </CCol>
-        ))}
+        {products.length > 0 ? (
+          products.map((product) => (
+            <CCol sm="6" md="4" lg="3" key={product.id_product} className="mb-4">
+              <CCard>
+                <CCardImage
+                  orientation="top"
+                  src="https://via.placeholder.com/150" // Puedes agregar imágenes reales aquí
+                  alt={product.description}
+                />
+                <CCardHeader>{product.description}</CCardHeader>
+                <CCardBody>
+                  <CCardTitle>Precio: ${product.price_sale.toFixed(2)}</CCardTitle>
+                  <p>Stock: {product.stock}</p>
+                </CCardBody>
+              </CCard>
+            </CCol>
+          ))
+        ) : (
+          <p>No hay productos en esta categoría.</p>
+        )}
       </CRow>
     </div>
   )
