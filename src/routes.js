@@ -4,8 +4,12 @@ import React from 'react'
 const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
 const Colors = React.lazy(() => import('./views/theme/colors/Colors'))
 const Typography = React.lazy(() => import('./views/theme/typography/Typography'))
-const Sales = React.lazy(() => import ('./views/Sales/Sales.js'))
-const investment = React.lazy(() => import ('./views/investment/investment.js'))
+const Users = React.lazy(() => import('./views/users/users'))
+const products = React.lazy(() => import('./views/products/products'))
+const setting = React.lazy(() => import('./views/setting/setting'))
+const categoryproducts = React.lazy(() => import('./views/products/CategoryProducts'))
+const Sales = React.lazy(() => import('./views/Sales/Sales.js'))
+const investment = React.lazy(() => import('./views/investment/investment.js'))
 
 // Base
 const Accordion = React.lazy(() => import('./views/base/accordion/Accordion'))
@@ -53,6 +57,7 @@ const Modals = React.lazy(() => import('./views/notifications/modals/Modals'))
 const Toasts = React.lazy(() => import('./views/notifications/toasts/Toasts'))
 
 const Widgets = React.lazy(() => import('./views/widgets/Widgets'))
+const Login = React.lazy(() => import('./views/pages/login/Login'))
 
 const routes = [
   { path: '/Sales', name: 'Sales', element: Sales },
@@ -102,6 +107,12 @@ const routes = [
   { path: '/notifications/modals', name: 'Modals', element: Modals },
   { path: '/notifications/toasts', name: 'Toasts', element: Toasts },
   { path: '/widgets', name: 'Widgets', element: Widgets },
+  //my path camila
+  { path: '/users', name: 'Users', element: Users },
+  { path: '/products', name: 'Products', element: products },
+  { path: '/setting', name: 'Setting', element: setting },
+  { path: '/login', name: 'Login', element: Login },
+  { path: '/products/category/:id', name: 'CategoryProducts', element: categoryproducts },
 ]
 
 export default routes

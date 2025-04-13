@@ -1,6 +1,7 @@
 import React, { Suspense, useEffect } from 'react'
 import { BrowserRouter, HashRouter, Route, Routes } from 'react-router-dom'
 import { useSelector } from 'react-redux'
+//import camila
 
 import { CSpinner, useColorModes } from '@coreui/react'
 import './scss/style.scss'
@@ -8,6 +9,8 @@ import './scss/style.scss'
 // We use those styles to show code examples, you should remove them in your application.
 import './scss/examples.scss'
 
+//my rutes camila
+const UserAdmin = React.lazy(() => import('./views/users/UserAdmin.js'))
 // Containers
 const DefaultLayout = React.lazy(() => import('./layout/DefaultLayout'))
 
@@ -50,6 +53,8 @@ const App = () => {
           <Route exact path="/404" name="Page 404" element={<Page404 />} />
           <Route exact path="/500" name="Page 500" element={<Page500 />} />
           <Route path="*" name="Home" element={<DefaultLayout />} />
+          //my reutes camila
+          <Route exact path="/users/role/:id" name="user type" element={<UserAdmin />} />
         </Routes>
       </Suspense>
     </BrowserRouter>
