@@ -96,7 +96,7 @@ const Investment = () => {
       </button>
 
       <input
-        className="search-bar"
+        className="search-bar2"
         type="text"
         placeholder="Search..."
       />

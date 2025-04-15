@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { CModal, CModalHeader, CTable } from "@coreui/react";
+import { CModal, CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableDataCell} from "@coreui/react";
 import "./Sale.scss";
 import {Modal} from "@coreui/coreui";
-import { CModalBody,CModalFooter,CButton} from '@coreui/react';
+import { CModalHeader, CModalBody,CModalFooter,CButton} from '@coreui/react';
 
 const Sales = () => {
   const columns = [
@@ -11,44 +11,67 @@ const Sales = () => {
     { key: "total", label: "Total" },
     { key: "date", label: "Date" },
     { key: "status", label: "Status" },
-    { key: "actions", label: "Actions" },
+    { key: "vm", label: "View More" },
   ];
 
   const initialItems = [
-        { id: 10, class: "David", total: "500,00", date: "2025-04-06", status: "Paid", viewMore: "View more" },
-        { id: 9, class: "Olivia", total: "320,00", date: "2025-04-05", status: "Paid", viewMore: "View more" },
-        { id: 8, class: "Chris", total: "120,00", date: "2025-04-04", status: "Paid", viewMore: "View more" },
-        { id: 7, class: "Emma", total: "200,00", date: "2025-04-04", status: "Paid", viewMore: "View more" },
-        { id: 6, class: "Michael", total: "450,00", date: "2025-04-04", status: "Pending", viewMore: "View more" },
-        { id: 5, class: "Sarah", total: "300,00", date: "2025-04-03", status: "Paid", viewMore: "View more" },
-        { id: 4, class: "Joe", total: "100,00", date: "2025-04-03", status: "Paid", viewMore: "View more" },
-        { id: 3, class: "Allison", total: "250,00", date: "2025-04-02", status: "Paid", viewMore: "View more" },
-        { id: 2, class: "Frank", total: "50,00", date: "2025-04-02", status: "Paid", viewMore: "View more" },
-        { id: 1, class: "Matt", total: "140,00", date: "2025-04-02", status: "Paid", viewMore: "View more" },
+        { id: 10, class: "David", total: "500,00", date: "2025-04-06", status: "Paid"},
+        { id: 9, class: "Olivia", total: "320,00", date: "2025-04-05", status: "Paid"},
+        { id: 8, class: "Chris", total: "120,00", date: "2025-04-04", status: "Paid"},
+        { id: 7, class: "Emma", total: "200,00", date: "2025-04-04", status: "Paid"},
+        { id: 6, class: "Michael", total: "450,00", date: "2025-04-04", status: "Pending"},
+        { id: 5, class: "Sarah", total: "300,00", date: "2025-04-03", status: "Paid"},
+        { id: 4, class: "Joe", total: "100,00", date: "2025-04-03", status: "Paid"},
+        { id: 3, class: "Allison", total: "250,00", date: "2025-04-02", status: "Paid"},
+        { id: 2, class: "Frank", total: "50,00", date: "2025-04-02", status: "Paid"},
+        { id: 1, class: "Matt", total: "140,00", date: "2025-04-02", status: "Paid"},
+      ];
+
+      const columns2 = [
+        { key: "id", label: "Product" },
+        { key: "amount", label: "Amount" },
+        { key: "subtotal", label: "Subtotal ($)" },
+      ];
+
+      const i_colums2 = [
+        { id: 1, amount: "10", subtotal: "50" },
+        { id: 5, amount: "10", subtotal: "320" },
+        { id: 6, amount: "20", subtotal: "130" },
       ];
 
   const [items, setItems] = useState(initialItems);
   const [filteredItems, setFilteredItems] = useState(initialItems);
-  const [searchTerm, setSearchTerm] = useState("");
   const [newRecord, setNewRecord] = useState({ id: "", class: "", total: "", date: "", status: "" });
-  const [isEditing, setIsEditing] = useState(false);
-  const [editId, setEditId] = useState(null);
-
   const [visible,setvisible]=useState(false)
-  const [visible2,setvisible2]=useState(false)
 
-  const handleSearch = (event) => {
-    const value = event.target.value.toLowerCase();
-    setSearchTerm(value);
+  const [viewMoreVisible, setViewMoreVisible] = useState(false); 
 
-    const filtered = items.filter((item) =>
-      Object.values(item).some((val) =>
-        String(val).toLowerCase().includes(value)
-      )
-    );
+  const [searchSeller, setSearchSeller] = useState("");
+  const [searchTotal, setSearchTotal] = useState("");
+  const [searchDate, setSearchDate] = useState("");
+  const [searchStatus, setSearchStatus] = useState("");
+
+  const [selectedRecord, setSelectedRecord] = useState(null);
+
+
+  const handleSearch = () => {
+    if (!searchSeller && !searchTotal && !searchDate && !searchStatus) {
+      setFilteredItems(items);
+      return;
+    }
+  
+    const filtered = items.filter((item) => {
+      return (
+        (searchSeller === "" || item.class.toLowerCase().includes(searchSeller.toLowerCase())) &&
+        (searchTotal === "" || item.total.toLowerCase().includes(searchTotal.toLowerCase())) &&
+        (searchDate === "" || item.date.toLowerCase().includes(searchDate.toLowerCase())) &&
+        (searchStatus === "" || item.status.toLowerCase().includes(searchStatus.toLowerCase()))
+      );
+    });
     setFilteredItems(filtered);
   };
 
+  
   
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -56,56 +79,30 @@ const Sales = () => {
   };
 
 
-const handleSubmit = (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
 
-    console.log("Filtered items actualizados:", filteredItems);
-
-    if (isEditing) {
-      const updatedItems = items.map((item) =>
-        item.id === editId ? { ...item, ...newRecord } : item
-      );
-      setItems(updatedItems);
-      setFilteredItems(updatedItems);
-      setIsEditing(false);
-      setEditId(null);
-    } else {
       const newId = items.length > 0 ? Math.max(...items.map((item) => item.id)) + 1 : 1;
       const newItem = { ...newRecord, id: newId };
-      
-      console.log("Nuevo registro:", newItem);
-      console.log("Items actualizados:", [newItem, ...items]);
     
     setItems([newItem, ...items]);
     setFilteredItems([newItem, ...items]);
-
-    console.log("Filtered items actualizados:", filteredItems);
-  }
   
   setNewRecord({ id: "", class: "", total: "", date: "", status: "" });
-  
   setvisible(false);
   };
 
-  const handleDelete = (id) => {
-    const updatedItems = items.filter((item) => item.id !== id);
-    setItems(updatedItems);
-    setFilteredItems(updatedItems);
-  };
 
   const handleAddRecord = () => {
     setNewRecord({ id: "", class: "", total: "", date: "", status: "" });
-    setIsEditing(false);
     setvisible(true); 
   };
 
-  const handleEdit = (id) => {
-    const recordToEdit = items.find((item) => item.id === id);
-    setNewRecord(recordToEdit);
-    setIsEditing(true);
-    setEditId(id);
-    setvisible(true);
+  const handleViewMore = (item) => {
+    setSelectedRecord(item); 
+    setViewMoreVisible(true); 
   };
+
 
   return (
 
@@ -117,7 +114,7 @@ const handleSubmit = (event) => {
       <button onClick={handleAddRecord} className="m_button">
         Add Record
       </button>
-
+  
       <CModal visible={visible} onClose={()=>setvisible(false)}>
         <CModalHeader>
             <h2 className="title2">Add New Record</h2>
@@ -164,40 +161,116 @@ const handleSubmit = (event) => {
               onChange={handleInputChange}
             
             />
-           
+
+              <CButton  className="b_close" onClick={() => setvisible(false)}> Close </ CButton > 
+
+              <button className="b_save" type="submit">Add</button>
           </form>
 
-        </CModalBody>​​
-        < CModalFooter >
-        <CButton  className="b_close"color="secondary" onClick={() => setvisible(false)}> Close </ CButton > 
-          
-          <CButton className="b_save" type="submit" >save changes</ CButton > 
-        </CModalFooter >
 
+        </CModalBody>​​
       </CModal>
 
+     <CModal visible={viewMoreVisible} onClose={() => setViewMoreVisible(false)}>
+        <CModalHeader>
+          <h2 className="title2">Record Details</h2>
+        </CModalHeader>
+              <CModalBody>
 
-      <input
-        className="search-bar"
-        type="text"
-        placeholder="Search..."
-        value={searchTerm}
-        onChange={handleSearch}
-      />
+              <CTable hover>
+            <CTableHead>
+              <CTableRow>
+                {columns2.map((column) => (
+                  <CTableHeaderCell key={column.key}>{column.label}</CTableHeaderCell>
+                ))}
+              </CTableRow>
+            </CTableHead>
+            <CTableBody>
+              {i_colums2.map((item) => (
+                <CTableRow key={item.id}>
+                  <CTableDataCell>{item.id}</CTableDataCell>
+                  <CTableDataCell>{item.amount}</CTableDataCell>
+                  <CTableDataCell>{item.subtotal}</CTableDataCell>
+                </CTableRow>
+              ))}
+              {selectedRecord && (
+                <div>
+                 {selectedRecord.status === "Pending" && (
+                  <p><strong>Expiration Date:</strong> 2025-05-20</p>
+                )}
+              </div>
+              )}
+            </CTableBody>
+          </CTable>
+
+              </CModalBody>
+        <CModalFooter>
+          <CButton className="b_close2" onClick={() => setViewMoreVisible(false)}>
+            Close
+          </CButton>
+        </CModalFooter>
+    </CModal>
+
+    
+
+        <input
+          className="search-bar"
+          type="text"
+          placeholder="Search Seller..."
+          value={searchSeller}
+          onChange={(e) => {
+            setSearchSeller(e.target.value);
+            handleSearch();
+          }}
+        />
+        <input
+          className="search-bar"
+          type="text"
+          placeholder="Search Total..."
+          value={searchTotal}
+          onChange={(e) => {
+            setSearchTotal(e.target.value);
+            handleSearch();
+          }}
+        />
+        <input
+          className="search-bar"
+          type="text"
+          placeholder="Search Date..."
+          value={searchDate}
+          onChange={(e) => {
+            setSearchDate(e.target.value);
+            handleSearch();
+          }}
+        />
+        <input
+          className="search-bar"
+          type="text"
+          placeholder="Search Status..."
+          value={searchStatus}
+          onChange={(e) => {
+            setSearchStatus(e.target.value);
+            handleSearch();
+          }}
+        />
+     
 
       <CTable
         columns={columns}
         items={filteredItems.map((item) => ({
           ...item,
-          actions: (
-            <>
-              <button
-                onClick={() => handleEdit(item.id)}  style={{ marginRight: "10px",background:"rgba(46, 6, 99, 0.31)", border: "solid 1px #000000", borderRadius:"5px"}}>
-                Edit
-              </button>
-
-              <button onClick={() => handleDelete(item.id)} style={{ background:"rgba(46, 6, 99, 0.31)", border: "solid 1px #000000", borderRadius:"5px"}}>Delete</button>
-            </>
+          vm: (
+            <button
+              onClick={() => handleViewMore(item)}
+              style={{
+                background: item.status === "Pending" ? "rgba(201, 4, 4, 0.42)" : "rgba(46, 6, 99, 0.31)", 
+                marginRight: "10px",
+                border: "solid 1px #000000",
+                borderRadius: "5px",
+              }}
+            >
+              View More
+            </button>
           ),
         }))}
       />

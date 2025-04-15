@@ -12,7 +12,7 @@
     border-collapse: collapse;
     margin-left: 30px;
 }
-
+/*
 .search-bar{
       margin-left: 15px;
       margin-bottom: 20px;
@@ -20,6 +20,15 @@
       width: 50%;
       border: 1px solid #ddd;
       border-radius: 5px;
+}
+*/
+
+.search-bar {
+    margin-left: 10px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 20px;
 }
 
 .m_button{
@@ -70,10 +79,36 @@
     background:rgba(46, 6, 99, 0.31);
     border: solid 1px #000000; 
     border-radius: 5px;
+    margin-left: 150px;
+    
+
+    &:hover{
+        background:rgba(183, 171, 199, 0.31);
+        cursor: pointer;
+        border: solid 1px #000000; 
+    }
 }
 
 .b_save{
     background:rgba(46, 6, 99, 0.31);
     border: solid 1px #000000; 
     border-radius: 5px;
+    margin-left: 20px;
+    padding: 5px;
+    padding-bottom: 8px;
+    padding-left: 13px;
+    padding-right: 13px;
+    margin-top: 10px;
+
+    &:hover{
+        background:rgba(183, 171, 199, 0.31);
+        cursor: pointer;
+    }
+}
+
+.b_close2{
+    background:rgba(46, 6, 99, 0.31);
+    border: solid 1px #000000; 
+    border-radius: 5px;
+
 }
