@@ -7,7 +7,6 @@ const Typography = React.lazy(() => import('./views/theme/typography/Typography'
 const Users = React.lazy(() => import('./views/users/users'))
 const products = React.lazy(() => import('./views/products/products'))
 const setting = React.lazy(() => import('./views/setting/setting'))
-const categoryproducts = React.lazy(() => import('./views/products/CategoryProducts'))
 const Sales = React.lazy(() => import('./views/Sales/Sales.js'))
 const investment = React.lazy(() => import('./views/investment/investment.js'))
 
@@ -112,7 +111,6 @@ const routes = [
   { path: '/products', name: 'Products', element: products },
   { path: '/setting', name: 'Setting', element: setting },
   { path: '/login', name: 'Login', element: Login },
-  { path: '/products/category/:id', name: 'CategoryProducts', element: categoryproducts },
 ]
 
 export default routes

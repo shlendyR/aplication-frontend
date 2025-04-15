@@ -75,7 +75,6 @@ const _nav = [
       },
     ],
   },
-  // end my nav camila
 ]
 
 export default _nav

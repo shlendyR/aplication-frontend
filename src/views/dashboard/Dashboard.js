@@ -2,24 +2,7 @@ import React from 'react'
 import classNames from 'classnames'
 import { ChartBarExample } from './ChartBarExample' // Ajusta la ruta si está en otra carpeta
 
-import {
-  CAvatar,
-  CButton,
-  CButtonGroup,
-  CCard,
-  CCardBody,
-  CCardFooter,
-  CCardHeader,
-  CCol,
-  CProgress,
-  CRow,
-  CTable,
-  CTableBody,
-  CTableDataCell,
-  CTableHead,
-  CTableHeaderCell,
-  CTableRow,
-} from '@coreui/react'
+import { CButton, CButtonGroup, CCard, CCardBody, CCardHeader, CCol } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import {
   cifEs,
