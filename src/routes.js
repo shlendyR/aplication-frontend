@@ -6,6 +6,7 @@ const Colors = React.lazy(() => import('./views/theme/colors/Colors'))
 const Typography = React.lazy(() => import('./views/theme/typography/Typography'))
 const Sales = React.lazy(() => import ('./views/Sales/Sales.js'))
 const investment = React.lazy(() => import ('./views/investment/investment.js'))
+const providers = React.lazy(() => import ('./views/providers/providers.js'))
 
 // Base
 const Accordion = React.lazy(() => import('./views/base/accordion/Accordion'))
@@ -57,6 +58,7 @@ const Widgets = React.lazy(() => import('./views/widgets/Widgets'))
 const routes = [
   { path: '/Sales', name: 'Sales', element: Sales },
   { path: '/investment', name: 'investment', element: investment },
+  { path: '/providers', name: 'Providers', element: providers },
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
   { path: '/theme', name: 'Theme', element: Colors, exact: true },

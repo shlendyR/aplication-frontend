@@ -27,7 +27,7 @@ const _nav = [
       color: 'info',
       text: 'NEW',
     },
-  },
+  },/*
   {
     component: CNavTitle,
     name: 'Theme',
@@ -47,7 +47,7 @@ const _nav = [
   {
     component: CNavTitle,
     name: 'Components',
-  },
+  },*/
   {
     component: CNavItem,
     name: 'Sales',
@@ -60,6 +60,12 @@ const _nav = [
     to: '/investment',
     icon: <CIcon icon={cilChartPie} customClassName="nav-icon" />, 
   },
+  {
+    component: CNavItem,
+    name: 'Providers',
+    to: '/providers',
+    icon: <CIcon icon={cilChartPie} customClassName="nav-icon" />, 
+  },/*
   {
     component: CNavGroup,
     name: 'Base',
@@ -459,7 +465,7 @@ const _nav = [
     name: 'Docs',
     href: 'https://coreui.io/react/docs/templates/installation/',
     icon: <CIcon icon={cilDescription} customClassName="nav-icon" />,
-  },
+  },*/
 ]
 
 export default _nav

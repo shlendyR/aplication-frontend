@@ -1,5 +1,3 @@
-<<<<<<< Updated upstream
-=======
 {
   "category": [
     {
@@ -164,9 +162,18 @@
     },
     {
       "id_user": 2,
-      "user_name": "Carlos Pérez",
+      "user_name": "Camila Rincón",
       "email": "carlos.perez@example.com",
       "password": 123456,
+      "phone": "04141234567",
+      "birthdate": "1990-05-15",
+      "id_role": 2
+    },
+    {
+      "id_user": 100,
+      "user_name": "q",
+      "email": "1",
+      "password": 111,
       "phone": "04141234567",
       "birthdate": "1990-05-15",
       "id_role": 2
@@ -179,7 +186,8 @@
       "date": "2025-04-02",
       "total": "500,00",
       "description": "venta 1",
-      "status": "Paid"
+      "status": "Paid",
+      "payment": "Effective"
     },
     {
       "id_sale": 1,
@@ -187,7 +195,8 @@
       "date": "2025-04-01",
       "total": "320,00",
       "description": "venta pendiente",
-      "status": "Pending"
+      "status": "Pending",
+      "payment": "Credit Card"
     }
   ],
   "sale_detail": [
@@ -219,20 +228,70 @@
     "id_sale": 1
   }
   ],
-  "payment":[{
+  "payment":[
+    {
     "id_payment": 1,
     "payment_date": "2025-04-01",
-    "amount": 200,
+    "amount_paid": 200,
+    "payment_method": "Credit Card",
     "id_accounts_receivable": 1
   },
   {
     "id_payment": 2,
     "payment_date": "2025-04-02",
     "amount_paid": 120,
-    "payment_method": "credit card",
+    "payment_method": "Credit Card",
     "id_accounts_receivable": 1
   }
+  ],
+  "provider":[
+    {
+      "id_provider": 1,
+      "name": "Proveedor 1",
+      "number": "04141234567"
+    },
+    {
+      "id_provider": 2,
+      "name": "Proveedor 2",
+      "number": "04141234567"
+    }
+  ],
+  "investment":[
+    {
+      "id_investment": 1,
+      "date": "2025-04-01",
+      "total": 1000,
+      "id_provider": 1
+    },
+    {
+      "id_investment": 2,
+      "date": "2025-04-12",
+      "total": 3500,
+      "id_provider": 1
+    }    
+  ],
+  "investment_detail":[
+    {
+      "id_investment_detail": 1,
+      "amount": 20,
+      "subtotal": 200,
+      "id_product": 5,
+      "id_investment": 1
+    },
+    {
+      "id_investment_detail": 2,
+      "amount": 10,
+      "subtotal": 300,
+      "id_product": 4,
+      "id_investment": 1
+    },
+    {
+      "id_investment_detail": 3,
+      "amount": 14,
+      "subtotal": 320,
+      "id_product": 2,
+      "id_investment": 2
+    }
   ]
 }
 
->>>>>>> Stashed changes
