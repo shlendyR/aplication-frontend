@@ -3,21 +3,21 @@ import { useParams } from 'react-router-dom'
 import { CCard, CCardBody, CCardHeader, CCardTitle, CRow, CCol, CCardImage } from '@coreui/react'
 
 const CategoryProducts = () => {
-  const { id } = useParams() // Obtiene el ID de la categoría desde la URL
+  const { id, name_category } = useParams() // Obtiene el ID de la categoría desde la URL
   const [products, setProducts] = useState([])
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch('/db.json') // Ruta relativa al archivo db.json
+        const response = await fetch('http://localhost:8000/product') // Ruta relativa al archivo db.json
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`)
         }
         const data = await response.json()
         // Filtra los productos que pertenecen a la categoría seleccionada
-        const filteredProducts = data.product.filter(
-          (product) => product.id_category === parseInt(id),
-        )
+        const filteredProducts = Array.isArray(data)
+          ? data.filter((product) => String(product.id_category) === String(id))
+          : data.product.filter((product) => String(product.id_category) === String(id))
         setProducts(filteredProducts)
       } catch (error) {
         console.error('Error al cargar los productos:', error)
@@ -25,11 +25,11 @@ const CategoryProducts = () => {
     }
 
     fetchProducts()
-  }, [id])
+  }, [id]) // Dependencias para volver a ejecutar el efecto si cambian
 
   return (
     <div>
-      <h1 className="mb-4">Productos de la Categoría {id}</h1>
+      <h1 className="mb-4">Categoria: {name_category}</h1>
       <CRow>
         {products.length > 0 ? (
           products.map((product) => (

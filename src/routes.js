@@ -1,4 +1,3 @@
-import { element } from 'prop-types'
 import React from 'react'
 
 const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
@@ -6,10 +5,14 @@ const Colors = React.lazy(() => import('./views/theme/colors/Colors'))
 const Typography = React.lazy(() => import('./views/theme/typography/Typography'))
 const Users = React.lazy(() => import('./views/users/users'))
 const products = React.lazy(() => import('./views/products/products'))
+const CategoryProducts = React.lazy(() => import('./views/products/CategoryProducts'))
 const setting = React.lazy(() => import('./views/setting/setting'))
 const Sales = React.lazy(() => import('./views/Sales/Sales.js'))
 const investment = React.lazy(() => import('./views/investment/investment.js'))
-
+const General = React.lazy(() => import('./views/setting/General'))
+const Profile = React.lazy(() => import('./views/setting/Profile'))
+const Notifications = React.lazy(() => import('./views/setting/Notifications'))
+const Suppliers = React.lazy(() => import('./views/suppliers/suppliers'))
 // Base
 const Accordion = React.lazy(() => import('./views/base/accordion/Accordion'))
 const Breadcrumbs = React.lazy(() => import('./views/base/breadcrumbs/Breadcrumbs'))
@@ -109,8 +112,17 @@ const routes = [
   //my path camila
   { path: '/users', name: 'Users', element: Users },
   { path: '/products', name: 'Products', element: products },
+  {
+    path: '/products/category/:id/:name_category',
+    name: 'CategoryProducts',
+    element: CategoryProducts,
+  },
   { path: '/setting', name: 'Setting', element: setting },
+  { path: '/setting/general', name: 'General Settings', element: General },
+  { path: '/setting/profile', name: 'Profile Settings', element: Profile },
+  { path: '/setting/notifications', name: 'Notification Settings', element: Notifications },
   { path: '/login', name: 'Login', element: Login },
+  { path: '/suppliers', name: 'Suppliers', element: Suppliers },
 ]
 
 export default routes
