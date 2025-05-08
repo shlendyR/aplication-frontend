@@ -2,6 +2,7 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import path from 'node:path'
 import autoprefixer from 'autoprefixer'
+import path from 'path'
 
 export default defineConfig(() => {
   return {
@@ -43,6 +44,16 @@ export default defineConfig(() => {
       port: 3000,
       proxy: {
         // https://vitejs.dev/config/server-options.html
+      },
+    },
+    resolve: {
+      alias: {
+        services: path.resolve(__dirname, './src/services'),
+      },
+    },
+    resolve: {
+      alias: {
+        services: path.resolve(__dirname, './src/services'),
       },
     },
   }

@@ -20,6 +20,7 @@ import {
   CFormInput,
 } from "@coreui/react";
 import "./investment.scss";
+import { fetchItems, createItem, updateItem, deleteItem, fetchInvestmentDetails, fetchProducts, fetchProviders } from "../../services/api";
 
 const Investment = () => {
   const columns = [
@@ -46,75 +47,104 @@ const Investment = () => {
 const [investmentToDelete, setInvestmentToDelete] = useState(null);
 
 
-  useEffect(() => {
-    const fetchInvestments = async () => {
-      try {
-        // Fetch data from db.json
-        const [investmentRes, investmentDetailRes, productRes, providerRes] = await Promise.all([
-          fetch("http://localhost:3001/investment"),
-          fetch("http://localhost:3001/investment_detail"),
-          fetch("http://localhost:3001/product"),
-          fetch("http://localhost:3001/provider"),
-        ]);
-  
-        if (!investmentRes.ok || !investmentDetailRes.ok || !productRes.ok || !providerRes.ok) {
-          throw new Error("Error al cargar los datos");
-        }
-  
-        const [investmentData, investmentDetailData, productData, providerData] = await Promise.all([
-          investmentRes.json(),
-          investmentDetailRes.json(),
-          productRes.json(),
-          providerRes.json(),
-        ]);
-  
-        // Combinar datos de investment, investment_detail, product y provider
-        const combinedInvestments = investmentData.map((investment) => {
-          const details = investmentDetailData
-            .filter((detail) => detail.id_investment === investment.id_investment)
-            .map((detail) => ({
-              ...detail,
-              description: productData.find((product) => product.id_product === detail.id_product)?.description || "Unknown Product",
-            }));
-  
-          const provider = providerData.find((prov) => prov.id_provider === investment.id_provider);
-  
-          return {
-            ...investment,
-            products: details,
-            providerName: provider ? provider.name : "Unknown Provider", // Asocia el nombre del proveedor
-          };
-        });
-  
-        setInvestments(combinedInvestments); // Actualiza el estado con los datos combinados
-      } catch (error) {
-        console.error("Error al cargar las inversiones:", error.message);
-      }
-    };
-  
-    fetchInvestments();
-  }, []);
+useEffect(() => {
+  const loadInvestments = async () => {
+    try {
+      const [investmentData, investmentDetailData, productData, providerData] = await Promise.all([
+        fetchItems(), // Obtiene las inversiones
+        fetchInvestmentDetails(), // Obtiene los detalles de las inversiones
+        fetchProducts(), // Obtiene los productos
+        fetchProviders(), // Obtiene los proveedores
+      ]);
+
+      console.log("Investment Details:", investmentDetailData); // Verifica los datos de investment_detail
+      console.log("Investments:", investmentData); // Verifica los datos de investment
+      console.log("Products:", productData); // Verifica los datos de productos
+      console.log("Providers:", providerData); // Verifica los datos de proveedores
+
+      // Combina los datos
+      const combinedInvestments = investmentData.map((investment) => {
+        const details = investmentDetailData
+          .filter((detail) => detail.id_investment === investment.id_investment) // Filtra los detalles por id_investment
+          .map((detail) => ({
+            ...detail,
+            description: productData.find((product) => product.id_product === detail.id_product)?.description || "Unknown Product",
+          }));
+
+        const provider = providerData.find((prov) => prov.id_provider === investment.id_provider);
+
+        return {
+          ...investment,
+          products: details,
+          providerName: provider ? provider.name : "Unknown Provider",
+        };
+      });
+
+      console.log("Combined Investments:", combinedInvestments); // Verifica los datos combinados
+      setInvestments(combinedInvestments); // Guarda las inversiones combinadas en el estado
+    } catch (error) {
+      console.error("Error al cargar las inversiones:", error.message);
+    }
+  };
+
+  loadInvestments();
+}, []);
 
   const filteredInvestments = investments.filter(
     (investment) =>
-      investment.date.includes(searchQuery) || // Busca por fecha
-      investment.providerName.toLowerCase().includes(searchQuery.toLowerCase()) // Busca por nombre del proveedor
+      investment.date.includes(searchQuery) || 
+      investment.providerName.toLowerCase().includes(searchQuery.toLowerCase()) 
   );
 
-  const handleEditInvestment = (investment) => {
-    setInvestmentToEdit(investment);
-    setEditProducts(investment.products);
-    setEditModalVisible(true);
+  const handleEditInvestment = async () => {
+    if (!investmentToEdit) {
+      alert("No hay inversión seleccionada para editar.");
+      return;
+    }
+  
+    const updatedInvestmentData = {
+      ...investmentToEdit,
+      products: editProducts.map((product) => ({
+        id_product: product.id_product,
+        amount: product.amount,
+        subtotal: product.subtotal,
+      })),
+    };
+  
+    try {
+      const updatedInvestment = await updateItem(investmentToEdit.id_investment, updatedInvestmentData); // Llama a updateItem
+      setInvestments(
+        investments.map((investment) =>
+          investment.id_investment === updatedInvestment.id_investment
+            ? updatedInvestment
+            : investment
+        )
+      ); // Actualiza el estado con la inversión editada
+      setEditModalVisible(false);
+    } catch (error) {
+      console.error("Error al actualizar la inversión:", error.message);
+    }
   };
 
   const handleDeleteInvestment = (id) => {
-    setInvestmentToDelete(id); // Configura la inversión a eliminar
-    setDeleteModalVisible(true); // Abre el modal de confirmación
+    setInvestmentToDelete(id); 
+    setDeleteModalVisible(true); 
   };
 
-  const confirmDeleteInvestment = () => {
-    handleDeleteInvestment(investmentToDelete);
-    setDeleteModalVisible(false);
+  const confirmDeleteInvestment = async () => {
+    if (!investmentToDelete) {
+      alert("No hay inversión seleccionada para eliminar.");
+      return;
+    }
+  
+    try {
+      await deleteItem(investmentToDelete); // Llama a deleteItem
+      setInvestments(investments.filter((investment) => investment.id_investment !== investmentToDelete)); // Elimina la inversión del estado
+      setDeleteModalVisible(false);
+      alert("Inversión eliminada correctamente.");
+    } catch (error) {
+      console.error("Error al eliminar la inversión:", error.message);
+    }
   };
  
   const handleAddProduct = () => {
@@ -127,7 +157,7 @@ const [investmentToDelete, setInvestmentToDelete] = useState(null);
             id: newProduct.id,
             amount: newProduct.amount,
             subtotal: newProduct.subtotal,
-            description: newProduct.description || "New Product", // Agrega una descripción si no existe
+            description: newProduct.description || "New Product", 
           },
         ],
       });
@@ -138,34 +168,29 @@ const [investmentToDelete, setInvestmentToDelete] = useState(null);
   };
 
   
-  const handleAddInvestment = () => {
-    if (newInvestment.date && newInvestment.products.length > 0) {
-      // Busca el proveedor correspondiente
-      const provider = investments.find((inv) => inv.providerNumber === newInvestment.providerNumber);
+  const handleAddInvestment = async () => {
+    if (!newInvestment.date || newInvestment.products.length === 0) {
+      alert("Por favor, ingresa una fecha y al menos un producto.");
+      return;
+    }
   
-      // Asegúrate de que los productos tengan la estructura correcta
-      const formattedProducts = newInvestment.products.map((product) => ({
+    const newInvestmentData = {
+      date: newInvestment.date,
+      providerNumber: newInvestment.providerNumber,
+      products: newInvestment.products.map((product) => ({
         id_product: product.id,
         amount: product.amount,
         subtotal: product.subtotal,
-        description: product.description || "New Product", // Agrega una descripción si no existe
-      }));
+      })),
+    };
   
-      // Agrega el nuevo registro al inicio del estado
-      setInvestments([
-        {
-          ...newInvestment,
-          products: formattedProducts,
-          providerName: provider ? provider.providerName : "Unknown Provider", // Asocia el nombre del proveedor
-        },
-        ...investments,
-      ]);
-  
-      // Limpia el formulario
+    try {
+      const createdInvestment = await createItem(newInvestmentData); // Llama a createItem
+      setInvestments([createdInvestment, ...investments]); // Agrega la nueva inversión al estado
       setNewInvestment({ date: "", providerNumber: "", products: [] });
       setModalVisible(false);
-    } else {
-      alert("Por favor, ingresa una fecha y al menos un producto.");
+    } catch (error) {
+      console.error("Error al agregar la inversión:", error.message);
     }
   };
   
@@ -472,13 +497,18 @@ const [investmentToDelete, setInvestmentToDelete] = useState(null);
                   </CTableRow>
                 </CTableHead>
                 <CTableBody>
-                  {investment.products.map((product, index) => (
+                {investment.products && investment.products.length > 0 ? (
+              investment.products.map((product, index) => (
                     <CTableRow key={index}>
                       <CTableDataCell>{product.id_product}</CTableDataCell>
                       <CTableDataCell>{product.amount}</CTableDataCell>
                       <CTableDataCell>{product.subtotal}</CTableDataCell>
                     </CTableRow>
-                  ))}
+                  )) ) : ( 
+                    <CTableRow>
+                    <CTableDataCell colSpan={3}>No products available</CTableDataCell>
+                  </CTableRow>
+                  )}
                 </CTableBody>
               </CTable>
               <CButton style={{

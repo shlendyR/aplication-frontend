@@ -1,6 +1,8 @@
 import React, { useState, useEffect  } from "react";
 import { CAccordion,CAccordionBody,CAccordionHeader,CAccordionItem,CTable,CTableBody,CTableHead,CTableHeaderCell,CTableRow,CTableDataCell,CPagination,CPaginationItem,CModal,CModalHeader,CModalBody,CModalFooter,CButton,CFormInput } from "@coreui/react";
 import "./providers.scss";
+import { fetchItems, createItem, updateItem, deleteItem, fetchProviders } from "../../services/api";
+
 
 const Providers = () => {
     const [providers, setProviders] = useState([]); 
@@ -15,20 +17,16 @@ const Providers = () => {
 
 
     useEffect(() => {
-      const fetchProviders = async () => {
+      const loadProviders = async () => {
         try {
-          const response = await fetch("http://localhost:3001/provider"); 
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-          const data = await response.json();
-          setProviders(data); 
+          const providersData = await fetchProviders(); // Llama a fetchProviders
+          setProviders(providersData); // Guarda los datos en el estado
         } catch (error) {
           console.error("Error al cargar los proveedores:", error.message);
         }
       };
-  
-      fetchProviders();
+    
+      loadProviders();
     }, []);
 
     const filteredProviders = providers.filter(
@@ -38,19 +36,44 @@ const Providers = () => {
         provider.id_provider.toString().includes(searchQuery)
     );
     
-    const handleEditProvider = (provider) => {
-      setProviderToEdit(provider);
-      setEditModalVisible(true);
+    const handleEditProvider = async () => {
+      if (!providerToEdit) {
+        alert("No hay proveedor seleccionado para editar.");
+        return;
+      }
+    
+      try {
+        const updatedProvider = await updateItem(providerToEdit.id_provider, providerToEdit); // Llama a updateItem
+        setProviders(
+          providers.map((provider) =>
+            provider.id_provider === updatedProvider.id_provider ? updatedProvider : provider
+          )
+        ); // Actualiza el estado con el proveedor editado
+        setEditModalVisible(false);
+      } catch (error) {
+        console.error("Error al actualizar el proveedor:", error.message);
+      }
     };
 
     const handleDeleteProvider = (id) => {
-      setProviderToDelete(id); // Configura el proveedor a eliminar
-      setDeleteModalVisible(true); // Abre el modal de confirmación
+      setProviderToDelete(id); 
+      setDeleteModalVisible(true); 
     };
 
-    const confirmDeleteProvider = () => {
-      handleDeleteProvider(providerToDelete);
-      setDeleteModalVisible(false);
+    const confirmDeleteProvider = async () => {
+      if (!providerToDelete) {
+        alert("No hay proveedor seleccionado para eliminar.");
+        return;
+      }
+    
+      try {
+        await deleteItem(providerToDelete); // Llama a deleteItem
+        setProviders(providers.filter((provider) => provider.id_provider !== providerToDelete)); // Elimina el proveedor del estado
+        setDeleteModalVisible(false);
+        alert("Proveedor eliminado correctamente.");
+      } catch (error) {
+        console.error("Error al eliminar el proveedor:", error.message);
+      }
     };
 
     const handleInputChange = (e) => {
@@ -59,15 +82,24 @@ const Providers = () => {
     };
   
     
-    const handleAddProvider = () => {
-      if (newProvider.name && newProvider.phone) {
-        const newId = providers.length > 0 ? providers[providers.length - 1].id_provider + 1 : 1; 
-        const provider = { id_provider: newId, name: newProvider.name, number: newProvider.phone }; 
-        setProviders([...providers, provider]); 
-        setNewProvider({ name: "", phone: "" }); 
-        setModalVisible(false); 
-      } else {
+    const handleAddProvider = async () => {
+      if (!newProvider.name || !newProvider.phone) {
         alert("Por favor, completa todos los campos.");
+        return;
+      }
+    
+      const newProviderData = {
+        name: newProvider.name,
+        phone: newProvider.phone,
+      };
+    
+      try {
+        const createdProvider = await createItem(newProviderData); // Llama a createItem
+        setProviders([...providers, createdProvider]); // Agrega el nuevo proveedor al estado
+        setNewProvider({ name: "", phone: "" });
+        setModalVisible(false);
+      } catch (error) {
+        console.error("Error al agregar el proveedor:", error.message);
       }
     };
   

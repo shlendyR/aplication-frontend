@@ -20,6 +20,7 @@ import './scss/style.scss'
 import './scss/examples.scss'
 import Sales from './views/Sales/Sales';
 import Pending from './views/pendient/pendient';
+import { fetchItems, createItem, updateItem, deleteItem } from './services/api';
 
 // Containers
 const DefaultLayout = React.lazy(() => import('./layout/DefaultLayout'))
@@ -33,15 +34,10 @@ const App = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await fetch("http://localhost:3001/user");
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const userData = await response.json();
-        console.log("Fetched Users:", userData); // Verifica los datos obtenidos
-        setUsers(userData);
+        const response = await fetchItems(); // Llama a fetchItems
+        setUsers(response); // Actualiza el estado con los datos obtenidos
       } catch (error) {
-        console.error("Error fetching users:", error.message);
+        console.error('Error fetching users:', error.message);
       }
     };
   
