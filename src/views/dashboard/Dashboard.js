@@ -1,45 +1,38 @@
-import React from 'react'
-import classNames from 'classnames'
-import { ChartBarExample } from './ChartBarExample' // Ajusta la ruta si está en otra carpeta
-
-import { CButton, CButtonGroup, CCard, CCardBody, CCardHeader, CCol } from '@coreui/react'
+import React, { useState } from 'react'
+import { ChartBarExample } from './ChartBarExample' // Ajusta la ruta si es necesario
+import { CButton, CButtonGroup, CCard, CCardBody, CCardHeader, CCol, CRow } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import {
-  cifEs,
-  cifFr,
-  cifIn,
-  cifPl,
-  cifUs,
-  cibTwitter,
-  cilCloudDownload,
-  cilPeople,
-  cilUser,
-  cilUserFemale,
-} from '@coreui/icons'
-
+import { cilCloudDownload } from '@coreui/icons'
 import WidgetsDropdown from '../widgets/WidgetsDropdown'
 
 const Dashboard = () => {
+  // Estado para controlar el modo del gráfico: 'week' para 7 días y 'Month' para 12 meses.
+  const [chartMode, setChartMode] = useState('Month')
+
   return (
     <>
-      <WidgetsDropdown className="mb-4" />
-
+      <CRow className="mb-4">
+        <WidgetsDropdown />
+      </CRow>
       <CCard className="mb-4">
         <CCardHeader>Grafico de Ventas</CCardHeader>
         <CCol sm={5}>
-          <div className="small text-body-secondary">January - July 2023</div>
+          <div className="small text-body-secondary">
+            {chartMode === 'week' ? 'Últimos 7 días' : 'Enero - Diciembre'}
+          </div>
         </CCol>
         <CCol sm={7} className="d-none d-md-block">
           <CButton color="primary" className="float-end">
             <CIcon icon={cilCloudDownload} />
           </CButton>
           <CButtonGroup className="float-end me-3">
-            {['Day', 'Month', 'Year'].map((value) => (
+            {['week', 'Month'].map((value) => (
               <CButton
                 color="outline-secondary"
                 key={value}
                 className="mx-0"
-                active={value === 'Month'}
+                active={value === chartMode}
+                onClick={() => setChartMode(value)}
               >
                 {value}
               </CButton>
@@ -47,7 +40,7 @@ const Dashboard = () => {
           </CButtonGroup>
         </CCol>
         <CCardBody>
-          <ChartBarExample />
+          <ChartBarExample mode={chartMode} />
         </CCardBody>
       </CCard>
     </>

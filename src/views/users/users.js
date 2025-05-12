@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import {
   CAvatar,
   CCard,
@@ -10,7 +10,6 @@ import {
   CTableHead,
   CTableHeaderCell,
   CTableRow,
-  CButton,
   CModal,
   CModalHeader,
   CModalTitle,
@@ -24,10 +23,12 @@ import {
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilPeople, cilPencil, cilTrash, cilCloudDownload, cilPlus } from '@coreui/icons'
+import useFetch from '../../hooks/useFetch'
 
 const Users = () => {
   const [users, setUsers] = useState([])
-  const [roles, setRoles] = useState([])
+  const [searchTerm, setSearchTerm] = useState('') // Estado para el término de búsqueda
+  const [filteredUsers, setFilteredUsers] = useState([]) // Estado para los usuarios filtrados
   const [visible, setVisible] = useState(false) // Estado para el modal de edición
   const [visibleAdd, setVisibleAdd] = useState(false) // Estado para el modal de agregar
   const [selectedUser, setSelectedUser] = useState(null)
@@ -47,30 +48,54 @@ const Users = () => {
     password: '',
   })
 
+  const { data, loading: loading, error: error } = useFetch('http://localhost:8000/user')
+  const { data: roles } = useFetch('http://localhost:8000/role')
+
   useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const response = await fetch('/db.json')
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`)
-        }
-        const data = await response.json()
-        // Mostrar todos los usuarios sin filtrar
-        setUsers(data.user)
-        setRoles(data.role)
-      } catch (error) {
-        console.error('Error al cargar los usuarios:', error)
-      }
+    if (data) {
+      setUsers(data) // Actualiza los usuarios con los datos obtenidos de la API
     }
+  }, [data])
 
-    fetchUsers()
-  }, [])
+  // Filtrado de usuarios basado en el término de búsqueda
+  useEffect(() => {
+    const filtered = users.filter(
+      (user) =>
+        user.user_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        user.phone.includes(searchTerm),
+    )
+    setFilteredUsers(filtered)
+  }, [searchTerm, users])
 
-  const handleDelete = (userId) => {
-    const updatedUsers = users.filter((user) => user.id_user !== userId)
-    setUsers(updatedUsers)
-    // Simula la actualización del archivo db.json
-    updateDbJson({ user: updatedUsers })
+  const handleSearchChange = (event) => {
+    const value = event.target.value.toLowerCase()
+    setSearchTerm(value)
+
+    // Filtrar usuarios según el término de búsqueda
+    const filtered = users.filter(
+      (user) =>
+        user.user_name.toLowerCase().includes(value) ||
+        user.email.toLowerCase().includes(value) ||
+        user.phone.includes(value),
+    )
+    setFilteredUsers(filtered)
+  }
+
+  const handleDelete = async (userId) => {
+    try {
+      const response = await fetch(`http://localhost:8000/user/${userId}`, {
+        method: 'DELETE',
+      })
+      if (!response.ok) {
+        throw new Error('Error al eliminar usuario')
+      }
+      const updatedUsers = users.filter((user) => user.id !== userId)
+      setUsers(updatedUsers)
+    } catch (error) {
+      console.error(error)
+      alert('Error eliminando el usuario')
+    }
   }
 
   const handleEdit = (user) => {
@@ -89,25 +114,27 @@ const Users = () => {
     setEditFormData({ ...editFormData, [event.target.name]: event.target.value })
   }
 
-  // Función para simular la actualización de un usuario
-  const handleUpdate = () => {
-    const updatedUsers = users.map((user) =>
-      user.id_user === selectedUser.id_user ? { ...user, ...editFormData } : user,
-    )
-    setUsers(updatedUsers)
-    setVisible(false)
-    // Simula la actualización del archivo db.json
-    updateDbJson({ user: updatedUsers })
-  }
-
-  // Función para simular la actualización del archivo db.json
-  const updateDbJson = (newData) => {
-    // Aquí deberías implementar la lógica para actualizar el archivo db.json
-    // Esto es solo una simulación, ya que no puedes escribir directamente en el archivo
-    // desde el frontend.
-    console.log('Simulando actualización de db.json con:', newData)
-    // En una aplicación real, podrías enviar estos datos a un backend
-    // que se encargue de actualizar el archivo db.json o una base de datos.
+  // Función la actualización de un usuario
+  const handleUpdat = async () => {
+    try {
+      const response = await fetch(`http://localhost:8000/user/${selectedUser.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(editFormData),
+      })
+      if (!response.ok) {
+        throw new Error('Error al actualizar el usuario')
+      }
+      const updatedUser = await response.json()
+      const updatedUsers = users.map((user) => (user.id === selectedUser.id ? updatedUser : user))
+      setUsers(updatedUsers)
+      setVisible(false)
+    } catch (error) {
+      console.error(error)
+      alert('Error actualizando el usuario')
+    }
   }
 
   // Funciones para el modal de agregar
@@ -115,14 +142,24 @@ const Users = () => {
     setAddFormData({ ...addFormData, [event.target.name]: event.target.value })
   }
 
-  const handleAdd = () => {
-    // Aquí implementarías la lógica para agregar el nuevo usuario
-    // Por ahora, solo simulamos la actualización del estado
-    const newUserId = users.length > 0 ? users[users.length - 1].id_user + 1 : 1
-    const newUser = { id_user: newUserId, ...addFormData }
-    setUsers([...users, newUser])
-    setVisibleAdd(false)
-    updateDbJson({ user: [...users, newUser] }) // Actualiza el "db.json" simulado
+  const handleAdd = async () => {
+    const newUser = { ...addFormData }
+    try {
+      const response = await fetch('http://localhost:800/user', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newUser),
+      })
+      if (!response.ok) throw new Error('Error al agregar usuario')
+      const createdUser = await response.json()
+      setUsers([...users, createdUser])
+      setVisibleAdd(false)
+    } catch (error) {
+      console.error(error)
+      alert('Hubo un problema al agregar el usuario.')
+    }
   }
 
   // Función para obtener el nombre del rol según el ID
@@ -130,6 +167,9 @@ const Users = () => {
     const role = roles.find((role) => role.id_role === parseInt(roleId))
     return role ? role.name_role : 'Unknown Role' // Ajusta para usar name_role
   }
+
+  if (loading) return <p>Cargando...</p>
+  if (error) return <p>Error: {error}</p>
 
   return (
     <CCard className="mb-4">
@@ -143,7 +183,13 @@ const Users = () => {
 
         <CContainer fluid>
           <CForm className="d-flex" style={{ maxWidth: '300px' }}>
-            <CFormInput type="search" className="me-2" placeholder="Search" />
+            <CFormInput
+              type="search"
+              className="me-2"
+              placeholder="Search"
+              value={searchTerm}
+              onChange={handleSearchChange} // Manejar cambios en el cuadro de búsqueda
+            />
             <CButton type="submit" color="success" variant="outline">
               Search
             </CButton>
@@ -153,7 +199,7 @@ const Users = () => {
       <CCardBody>
         <CTable align="middle" className="mb-0 border" hover responsive>
           <CTableHead color="black">
-            <CTableRow>
+            <CTableRow key={users.id}>
               <CTableHeaderCell className="text-center">
                 <CIcon icon={cilPeople} />
               </CTableHeaderCell>
@@ -166,10 +212,10 @@ const Users = () => {
             </CTableRow>
           </CTableHead>
           <CTableBody>
-            {users.map((user) => (
-              <CTableRow key={user.id_user}>
+            {filteredUsers.map((user) => (
+              <CTableRow key={user.id}>
                 <CTableDataCell className="text-center">
-                  <CAvatar size="md" src={`avatars/${user.id_user}.jpg`} />
+                  <CAvatar size="md" src={`avatars/${user.id}.jpg`} />
                 </CTableDataCell>
                 <CTableDataCell>
                   <div>{user.user_name}</div>
@@ -195,7 +241,7 @@ const Users = () => {
                   >
                     <CIcon icon={cilPencil} />
                   </CButton>
-                  <CButton color="danger" size="sm" onClick={() => handleDelete(user.id_user)}>
+                  <CButton color="danger" size="sm" onClick={() => handleDelete(user.id)}>
                     <CIcon icon={cilTrash} />
                   </CButton>
                 </CTableDataCell>

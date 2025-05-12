@@ -1,24 +1,6 @@
 import React from 'react'
 import CIcon from '@coreui/icons-react'
-import {
-  cilBasket,
-  cilBell,
-  cilCalculator,
-  cilChartPie,
-  cilCursor,
-  cilDescription,
-  cilDrop,
-  cilExternalLink,
-  cilHome,
-  cilNotes,
-  cilObjectGroup,
-  cilPencil,
-  cilPuzzle,
-  cilSettings,
-  cilSpeedometer,
-  cilStar,
-  cilUser,
-} from '@coreui/icons'
+import { cilBasket, cilChartPie, cilHome, cilNotes, cilSettings, cilUser } from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 
 const _nav = [
@@ -54,6 +36,18 @@ const _nav = [
     icon: <CIcon icon={cilChartPie} customClassName="nav-icon" />,
   },
   {
+    component: CNavItem,
+    name: 'Suppliers',
+    to: '/suppliers',
+    icon: <CIcon icon={cilChartPie} customClassName="nav-icon" />,
+  },
+
+  {
+    component: CNavTitle,
+    name: 'Settings',
+  },
+
+  {
     component: CNavGroup,
     name: 'Settings',
     icon: <CIcon icon={cilSettings} customClassName="nav-icon" />,
@@ -61,17 +55,17 @@ const _nav = [
       {
         component: CNavItem,
         name: 'General',
-        to: '/settings/general',
+        to: '/setting/general',
       },
       {
         component: CNavItem,
         name: 'Profile',
-        to: '/settings/profile',
+        to: '/setting/profile',
       },
       {
         component: CNavItem,
         name: 'Notifications',
-        to: '/settings/notifications',
+        to: '/setting/notifications',
       },
     ],
   },
