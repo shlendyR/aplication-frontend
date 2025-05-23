@@ -3,7 +3,7 @@ import React from 'react'
 const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
 const Colors = React.lazy(() => import('./views/theme/colors/Colors'))
 const Typography = React.lazy(() => import('./views/theme/typography/Typography'))
-const Users = React.lazy(() => import('./views/users/uses'))
+const Users = React.lazy(() => import('./views/users/users'))
 const products = React.lazy(() => import('./views/products/products'))
 const CategoryProducts = React.lazy(() => import('./views/products/CategoryProducts'))
 const setting = React.lazy(() => import('./views/setting/setting'))
@@ -13,6 +13,8 @@ const General = React.lazy(() => import('./views/setting/General'))
 const Profile = React.lazy(() => import('./views/setting/Profile'))
 const Notifications = React.lazy(() => import('./views/setting/Notifications'))
 const Suppliers = React.lazy(() => import('./views/suppliers/suppliers'))
+const providers = React.lazy(() => import ('./views/providers/providers.js'))
+
 // Base
 const Accordion = React.lazy(() => import('./views/base/accordion/Accordion'))
 const Breadcrumbs = React.lazy(() => import('./views/base/breadcrumbs/Breadcrumbs'))
@@ -62,8 +64,8 @@ const Widgets = React.lazy(() => import('./views/widgets/Widgets'))
 const Login = React.lazy(() => import('./views/pages/login/Login'))
 
 const routes = [
-  { path: '/Sales', name: 'Sales', element: Sales },
   { path: '/investment', name: 'investment', element: investment },
+  { path: '/providers', name: 'Providers', element: providers },
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
   { path: '/theme', name: 'Theme', element: Colors, exact: true },
@@ -122,6 +124,7 @@ const routes = [
   { path: '/setting/notifications', name: 'Notification Settings', element: Notifications },
   { path: '/login', name: 'Login', element: Login },
   { path: '/suppliers', name: 'Suppliers', element: Suppliers },
+  {path: '/users', name: 'Users', element: Users},
 ]
 
 export default routes

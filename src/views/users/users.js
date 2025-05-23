@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   CAvatar,
   CCard,
@@ -11,6 +11,7 @@ import {
   CTableHeaderCell,
   CTableRow,
   CModal,
+  CButton,
   CModalHeader,
   CModalTitle,
   CModalBody,
@@ -115,7 +116,7 @@ const Users = () => {
   }
 
   // Función la actualización de un usuario
-  const handleUpdat = async () => {
+  const handleUpdate = async () => {
     try {
       const response = await fetch(`http://localhost:8000/user/${selectedUser.id}`, {
         method: 'PUT',
@@ -145,7 +146,7 @@ const Users = () => {
   const handleAdd = async () => {
     const newUser = { ...addFormData }
     try {
-      const response = await fetch('http://localhost:800/user', {
+      const response = await fetch('http://localhost:8000/user', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

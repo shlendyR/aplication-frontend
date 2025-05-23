@@ -1,6 +1,6 @@
 import React from 'react'
 import CIcon from '@coreui/icons-react'
-import { cilBasket, cilChartPie, cilHome, cilNotes, cilSettings, cilUser } from '@coreui/icons'
+import { cilBasket, cilChartPie, cilSpeedometer , cilDescription ,cilHome, cilNotes, cilSettings, cilUser } from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 
 const _nav = [
@@ -9,7 +9,15 @@ const _nav = [
     component: CNavItem,
     name: 'Dashboard',
     to: '/dashboard',
-    icon: <CIcon icon={cilHome} customClassName="nav-icon" />,
+    icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon" />,
+    badge: {
+      color: 'info',
+      text: 'NEW',
+    },
+  },
+  {
+    component: CNavTitle,
+    name: 'Theme',
   },
   {
     component: CNavItem,
@@ -68,6 +76,12 @@ const _nav = [
         to: '/setting/notifications',
       },
     ],
+  },
+  {
+    component: CNavItem,
+    name: 'Docs',
+    href: 'https://coreui.io/react/docs/templates/installation/',
+    icon: <CIcon icon={cilDescription} customClassName="nav-icon" />,
   },
 ]
 

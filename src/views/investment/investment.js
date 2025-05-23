@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   CAccordion,
   CAccordionBody,
@@ -10,389 +10,218 @@ import {
   CTableHeaderCell,
   CTableRow,
   CTableDataCell,
-  CPagination, 
-  CPaginationItem,
+  CModal,
+  CModalHeader,
+  CModalBody,
+  CModalFooter,
+  CButton,
+  CFormInput,
 } from "@coreui/react";
+import useFetch from "../../hooks/useFetch"; // Importa el hook personalizado
 import "./investment.scss";
-
-
-
+import { fetchItems, createItem, updateItem, deleteItem, fetchInvestmentDetails, fetchProducts, fetchProviders } from "../../services/api";
 
 const Investment = () => {
-
   const columns = [
     { key: "id", label: "Product" },
     { key: "amount", label: "Amount" },
     { key: "subtotal", label: "Subtotal ($)" },
   ];
 
-  const items = [
-    { id: 1, amount: "10", subtotal: "50" },
-    { id: 5, amount: "10", subtotal: "40" },
-    { id: 6, amount: "20", subtotal: "120" },
-  ];
+  // Usa useFetch para obtener los datos
+  const { data: investmentData, loading: loadingInvestments } = useFetch("http://localhost:8000/investment");
+  const { data: investmentDetailData, loading: loadingDetails } = useFetch("http://localhost:8000/investment_detail");
+  const { data: productData, loading: loadingProducts } = useFetch("http://localhost:8000/product");
+  const { data: providerData, loading: loadingProviders } = useFetch("http://localhost:8000/provider");
 
-  const items2 = [
-    { id: 3, amount: "50", subtotal: "50" },
-    { id: 7, amount: "80", subtotal: "300" },
-    { id: 4, amount: "20", subtotal: "230" },
-  ];
+  const [investments, setInvestments] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [modalVisible, setModalVisible] = useState(false);
+  const [newInvestment, setNewInvestment] = useState({
+    date: "",
+    providerNumber: "",
+    products: [],
+  });
+  const [newProduct, setNewProduct] = useState({ id: "", amount: "", subtotal: "" });
 
-  const items3 = [
-    { id: 5, amount: "25", subtotal: "50" },
-    { id: 2, amount: "70", subtotal: "210" },
-    { id: 1, amount: "110", subtotal: "330" },
-  ];
+  const [editModalVisible, setEditModalVisible] = useState(false);
+  const [investmentToEdit, setInvestmentToEdit] = useState(null);
+  const [editProducts, setEditProducts] = useState([]);
 
-  const items4 = [
-    { id: 7, amount: "18", subtotal: "160" },
-    { id: 6, amount: "10", subtotal: "40" },
-    { id: 2, amount: "40", subtotal: "120" },
-  ];
+  const [deleteModalVisible, setDeleteModalVisible] = useState(false);
+  const [investmentToDelete, setInvestmentToDelete] = useState(null);
 
-  const items5 = [
-    { id: 4, amount: "20", subtotal: "60" },
-    { id: 1, amount: "60", subtotal: "60" },
-    { id: 3, amount: "24", subtotal: "240" },
-  ];
+  // Combina los datos una vez que se cargan
+  useEffect(() => {
+    if (investmentData && investmentDetailData && productData && providerData) {
+      const combinedInvestments = investmentData.map((investment) => {
+        const details = investmentDetailData
+          .filter((detail) => detail.id_investment === investment.id_investment)
+          .map((detail) => ({
+            ...detail,
+            description: productData.find((product) => product.id_product === detail.id_product)?.description || "Unknown Product",
+          }));
 
-  const items6 = [
-    { id: 8, amount: "10", subtotal: "50" },
-    { id: 5, amount: "10", subtotal: "40" },
-    { id: 2, amount: "20", subtotal: "120" },
-  ];
+        const provider = providerData.find((prov) => prov.id_provider === investment.id_provider);
 
-  const items7 = [
-    { id: 3, amount: "10", subtotal: "50" },
-    { id: 7, amount: "10", subtotal: "40" },
-    { id: 4, amount: "20", subtotal: "120" },
-  ];
+        return {
+          ...investment,
+          products: details,
+          providerName: provider ? provider.name : "Unknown Provider",
+        };
+      });
 
-  const items8 = [
-    { id: 1, amount: "10", subtotal: "50" },
-    { id: 5, amount: "10", subtotal: "40" },
-    { id: 2, amount: "20", subtotal: "120" },
-  ];
+      setInvestments(combinedInvestments);
+    }
+  }, [investmentData, investmentDetailData, productData, providerData]);
 
-  const items9 = [
-    { id: 6, amount: "10", subtotal: "50" },
-    { id: 4, amount: "10", subtotal: "40" },
-    { id: 8, amount: "20", subtotal: "120" },
-  ];
+  // Filtra las inversiones según la búsqueda
+  const filteredInvestments = investments.filter(
+    (investment) =>
+      investment.date.includes(searchQuery) ||
+      investment.providerName.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
-  const items10 = [
-    { id: 2, amount: "10", subtotal: "50" },
-    { id: 4, amount: "10", subtotal: "40" },
-    { id: 5, amount: "20", subtotal: "120" },
-  ];
+  const handleEditInvestment = (investment) => {
+    setInvestmentToEdit(investment);
+    setEditProducts(investment.products);
+    setEditModalVisible(true);
+  };
+
+  const handleDeleteInvestment = (id) => {
+    setInvestmentToDelete(id);
+    setDeleteModalVisible(true);
+  };
+
+  const confirmDeleteInvestment = () => {
+    setInvestments(investments.filter((inv) => inv.id_investment !== investmentToDelete));
+    setDeleteModalVisible(false);
+  };
+
+  const handleAddProduct = () => {
+    if (newProduct.id && newProduct.amount && newProduct.subtotal) {
+      setNewInvestment({
+        ...newInvestment,
+        products: [
+          ...newInvestment.products,
+          {
+            id: newProduct.id,
+            amount: newProduct.amount,
+            subtotal: newProduct.subtotal,
+            description: newProduct.description || "New Product",
+          },
+        ],
+      });
+      setNewProduct({ id: "", amount: "", subtotal: "" });
+    } else {
+      alert("Please complete all product fields.");
+    }
+  };
+
+  const handleAddInvestment = () => {
+    if (newInvestment.date && newInvestment.products.length > 0) {
+      const provider = providerData.find((prov) => prov.id_provider === newInvestment.providerNumber);
+
+      setInvestments([
+        {
+          ...newInvestment,
+          providerName: provider ? provider.name : "Unknown Provider",
+        },
+        ...investments,
+      ]);
+
+      setNewInvestment({ date: "", providerNumber: "", products: [] });
+      setModalVisible(false);
+    } else {
+      alert("Please enter a date and at least one product.");
+    }
+  };
 
   return (
     <>
+      <h1 className="title_i">Investment History</h1>
 
-  <h1 className="title_i">Investment History</h1>
-
-  <button className="i_button">
+      <button className="i_button" onClick={() => setModalVisible(true)}>
         Add Investment
       </button>
 
       <input
-        className="search-bar"
+        className="search-bar2"
         type="text"
-        placeholder="Search..."
+        placeholder="Search by Date or Provider Name..."
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
       />
 
-  <CAccordion>
-      <CAccordionItem itemKey={10}>
-        <CAccordionHeader className="accordion">
-          Inverstment: 2025-04-11
-          <button className="b_prov">Provider</button>
-        </CAccordionHeader>
-        <CAccordionBody>
-        <CTable hover>
-              <CTableHead>
-                <CTableRow>
-                  {columns.map((column) => (
-                    <CTableHeaderCell key={column.key}>{column.label}</CTableHeaderCell>
-                  ))}
-                </CTableRow>
-              </CTableHead>
-              <CTableBody>
-              {items.map((item) => (
-                  <CTableRow key={item.id}>
-                    <CTableDataCell>{item.id}</CTableDataCell>
-                    <CTableDataCell>{item.amount}</CTableDataCell>
-                    <CTableDataCell>{item.subtotal}</CTableDataCell>
-                  </CTableRow>
-                ))}
-              </CTableBody>
-            </CTable>
-          </CAccordionBody>
-        </CAccordionItem>
+      {loadingInvestments || loadingDetails || loadingProducts || loadingProviders ? (
+        <p>Loading...</p>
+      ) : (
+        <CAccordion>
+          {filteredInvestments.map((investment, index) => (
+            <CAccordionItem itemKey={index} key={index}>
+              <CAccordionHeader>
+                Investment: {investment.date} - Provider: {investment.providerName}
+              </CAccordionHeader>
+              <CAccordionBody>
+                <CTable hover>
+                  <CTableHead>
+                    <CTableRow>
+                      {columns.map((column) => (
+                        <CTableHeaderCell key={column.key}>{column.label}</CTableHeaderCell>
+                      ))}
+                    </CTableRow>
+                  </CTableHead>
+                  <CTableBody>
+                    {investment.products.map((product, index) => (
+                      <CTableRow key={index}>
+                        <CTableDataCell>{product.id_product}</CTableDataCell>
+                        <CTableDataCell>{product.amount}</CTableDataCell>
+                        <CTableDataCell>{product.subtotal}</CTableDataCell>
+                      </CTableRow>
+                    ))}
+                  </CTableBody>
+                </CTable>
+                <CButton onClick={() => handleEditInvestment(investment)}>Edit</CButton>
+                <CButton onClick={() => handleDeleteInvestment(investment.id_investment)}>Delete</CButton>
+              </CAccordionBody>
+            </CAccordionItem>
+          ))}
+        </CAccordion>
+      )}
 
-       
-      <CAccordionItem itemKey={9}>
-        <CAccordionHeader>
-          Inverstment: 2025-04-11
-          <button className="b_prov">Provider</button>
-        </CAccordionHeader>
-        <CAccordionBody>
-        <CTable hover>
-              <CTableHead>
-                <CTableRow>
-                  {columns.map((column) => (
-                    <CTableHeaderCell key={column.key}>{column.label}</CTableHeaderCell>
-                  ))}
-                </CTableRow>
-              </CTableHead>
-              <CTableBody>
-              {items2.map((items2) => (
-                  <CTableRow key={items2.id}>
-                    <CTableDataCell>{items2.id}</CTableDataCell>
-                    <CTableDataCell>{items2.amount}</CTableDataCell>
-                    <CTableDataCell>{items2.subtotal}</CTableDataCell>
-                  </CTableRow>
-                ))}
-              </CTableBody>
-            </CTable>
-          </CAccordionBody>
-        </CAccordionItem>
+      {/* Modales */}
+      <CModal visible={modalVisible} onClose={() => setModalVisible(false)}>
+        <CModalHeader>Add Investment</CModalHeader>
+        <CModalBody>
+          {/* Formulario para agregar inversión */}
+        </CModalBody>
+        <CModalFooter>
+          <CButton onClick={() => setModalVisible(false)}>Cancel</CButton>
+          <CButton onClick={handleAddInvestment}>Add Investment</CButton>
+        </CModalFooter>
+      </CModal>
 
-      
-      <CAccordionItem itemKey={8}>
-        <CAccordionHeader>
-          Inverstment: 2025-04-10
-          <button className="b_prov">Provider</button>
-        </CAccordionHeader>
-        <CAccordionBody>
-        <CTable hover>
-              <CTableHead>
-                <CTableRow>
-                  {columns.map((column) => (
-                    <CTableHeaderCell key={column.key}>{column.label}</CTableHeaderCell>
-                  ))}
-                </CTableRow>
-              </CTableHead>
-              <CTableBody>
-              {items3.map((items3) => (
-                  <CTableRow key={items3.id}>
-                    <CTableDataCell>{items3.id}</CTableDataCell>
-                    <CTableDataCell>{items3.amount}</CTableDataCell>
-                    <CTableDataCell>{items3.subtotal}</CTableDataCell>
-                  </CTableRow>
-                ))}
-              </CTableBody>
-            </CTable>
-          </CAccordionBody>
-        </CAccordionItem>
+      <CModal visible={editModalVisible} onClose={() => setEditModalVisible(false)}>
+        <CModalHeader>Edit Investment</CModalHeader>
+        <CModalBody>
+          {/* Formulario para editar inversión */}
+        </CModalBody>
+        <CModalFooter>
+          <CButton onClick={() => setEditModalVisible(false)}>Cancel</CButton>
+          <CButton>Save Changes</CButton>
+        </CModalFooter>
+      </CModal>
 
-       
-      <CAccordionItem itemKey={7}>
-        <CAccordionHeader>
-          Inverstment: 2025-04-10
-          <button className="b_prov">Provider</button>
-        </CAccordionHeader>
-        <CAccordionBody>
-        <CTable hover>
-              <CTableHead>
-                <CTableRow>
-                  {columns.map((column) => (
-                    <CTableHeaderCell key={column.key}>{column.label}</CTableHeaderCell>
-                  ))}
-                </CTableRow>
-              </CTableHead>
-              <CTableBody>
-              {items4.map((items4) => (
-                  <CTableRow key={items4.id}>
-                    <CTableDataCell>{items4.id}</CTableDataCell>
-                    <CTableDataCell>{items4.amount}</CTableDataCell>
-                    <CTableDataCell>{items4.subtotal}</CTableDataCell>
-                  </CTableRow>
-                ))}
-              </CTableBody>
-            </CTable>
-          </CAccordionBody>
-        </CAccordionItem>
-
-      
-      <CAccordionItem itemKey={6}>
-        <CAccordionHeader>
-          Inverstment: 2025-04-10
-          <button className="b_prov">Provider</button>
-        </CAccordionHeader>
-        <CAccordionBody>
-        <CTable hover>
-              <CTableHead>
-                <CTableRow>
-                  {columns.map((column) => (
-                    <CTableHeaderCell key={column.key}>{column.label}</CTableHeaderCell>
-                  ))}
-                </CTableRow>
-              </CTableHead>
-              <CTableBody>
-              {items5.map((items5) => (
-                  <CTableRow key={items5.id}>
-                    <CTableDataCell>{items5.id}</CTableDataCell>
-                    <CTableDataCell>{items5.amount}</CTableDataCell>
-                    <CTableDataCell>{items5.subtotal}</CTableDataCell>
-                  </CTableRow>
-                ))}
-              </CTableBody>
-            </CTable>
-          </CAccordionBody>
-        </CAccordionItem>
-
-      
-      <CAccordionItem itemKey={5}>
-        <CAccordionHeader>
-          Inverstment: 2025-04-08
-          <button className="b_prov">Provider</button>
-        </CAccordionHeader>
-        <CAccordionBody>
-        <CTable hover>
-              <CTableHead>
-                <CTableRow>
-                  {columns.map((column) => (
-                    <CTableHeaderCell key={column.key}>{column.label}</CTableHeaderCell>
-                  ))}
-                </CTableRow>
-              </CTableHead>
-              <CTableBody>
-              {items6.map((items6) => (
-                  <CTableRow key={items6.id}>
-                    <CTableDataCell>{items6.id}</CTableDataCell>
-                    <CTableDataCell>{items6.amount}</CTableDataCell>
-                    <CTableDataCell>{items6.subtotal}</CTableDataCell>
-                  </CTableRow>
-                ))}
-              </CTableBody>
-            </CTable>
-          </CAccordionBody>
-        </CAccordionItem>
-
-      
-      <CAccordionItem itemKey={4}>
-        <CAccordionHeader>
-          Inverstment: 2025-04-07
-          <button className="b_prov">Provider</button>
-        </CAccordionHeader>
-        <CAccordionBody>
-        <CTable hover>
-              <CTableHead>
-                <CTableRow>
-                  {columns.map((column) => (
-                    <CTableHeaderCell key={column.key}>{column.label}</CTableHeaderCell>
-                  ))}
-                </CTableRow>
-              </CTableHead>
-              <CTableBody>
-              {items7.map((items7) => (
-                  <CTableRow key={items7.id}>
-                    <CTableDataCell>{items7.id}</CTableDataCell>
-                    <CTableDataCell>{items7.amount}</CTableDataCell>
-                    <CTableDataCell>{items7.subtotal}</CTableDataCell>
-                  </CTableRow>
-                ))}
-              </CTableBody>
-            </CTable>
-          </CAccordionBody>
-        </CAccordionItem>
-
-        
-      <CAccordionItem itemKey={3}>
-        <CAccordionHeader>
-          Inverstment: 2025-04-07
-          <button className="b_prov">Provider</button>
-        </CAccordionHeader>
-        <CAccordionBody>
-        <CTable hover>
-              <CTableHead>
-                <CTableRow>
-                  {columns.map((column) => (
-                    <CTableHeaderCell key={column.key}>{column.label}</CTableHeaderCell>
-                  ))}
-                </CTableRow>
-              </CTableHead>
-              <CTableBody>
-              {items8.map((items8) => (
-                  <CTableRow key={items8.id}>
-                  <CTableDataCell>{items8.id}</CTableDataCell>
-                    <CTableDataCell>{items8.amount}</CTableDataCell>
-                    <CTableDataCell>{items8.subtotal}</CTableDataCell>
-                  </CTableRow>
-                ))}
-              </CTableBody>
-            </CTable>
-          </CAccordionBody>
-        </CAccordionItem>
-
-       
-      <CAccordionItem itemKey={2}>
-        <CAccordionHeader>
-          Inverstment: 2025-04-07
-          <button className="b_prov">Provider</button>
-        </CAccordionHeader>
-        <CAccordionBody>
-        <CTable hover>
-              <CTableHead>
-                <CTableRow>
-                  {columns.map((column) => (
-                    <CTableHeaderCell key={column.key}>{column.label}</CTableHeaderCell>
-                  ))}
-                </CTableRow>
-              </CTableHead>
-              <CTableBody>
-              {items9.map((items9) => (
-                  <CTableRow key={items9.id}>
-                    <CTableDataCell>{items9.id}</CTableDataCell>
-                    <CTableDataCell>{items9.amount}</CTableDataCell>
-                    <CTableDataCell>{items9.subtotal}</CTableDataCell>
-                  </CTableRow>
-                ))}
-              </CTableBody>
-            </CTable>
-          </CAccordionBody>
-        </CAccordionItem>
-
-        
-      <CAccordionItem itemKey={1}>
-        <CAccordionHeader>
-          Inverstment: 2025-04-06
-          <button className="b_prov">Provider</button>
-        </CAccordionHeader>
-        <CAccordionBody>
-        <CTable hover>
-              <CTableHead>
-                <CTableRow>
-                  {columns.map((column) => (
-                    <CTableHeaderCell key={column.key}>{column.label}</CTableHeaderCell>
-                  ))}
-                </CTableRow>
-              </CTableHead>
-              <CTableBody>
-              {items10.map((items10) => (
-                  <CTableRow key={items10.id}>
-                  <CTableDataCell>{items10.id}</CTableDataCell>
-                    <CTableDataCell>{items10.amount}</CTableDataCell>
-                    <CTableDataCell>{items10.subtotal}</CTableDataCell>
-                  </CTableRow>
-                ))}
-              </CTableBody>
-            </CTable>
-          </CAccordionBody>
-        </CAccordionItem>
-  </CAccordion>
-                
-  <CPagination aria-label="Page navigation example" style={{marginTop:"20px",marginBottom:"20px"}}>
-      <CPaginationItem>Previous</CPaginationItem>
-      <CPaginationItem>1</CPaginationItem>
-      <CPaginationItem>2</CPaginationItem>
-      <CPaginationItem>3</CPaginationItem>
-      <CPaginationItem>Next</CPaginationItem>
-    </CPagination>
+      <CModal visible={deleteModalVisible} onClose={() => setDeleteModalVisible(false)}>
+        <CModalHeader>Confirm Delete</CModalHeader>
+        <CModalBody>Are you sure you want to delete this investment?</CModalBody>
+        <CModalFooter>
+          <CButton onClick={() => setDeleteModalVisible(false)}>Cancel</CButton>
+          <CButton onClick={confirmDeleteInvestment}>Delete</CButton>
+        </CModalFooter>
+      </CModal>
     </>
-
-     
   );
-  };
-  
-  export default Investment; 
+};
+
+export default Investment;

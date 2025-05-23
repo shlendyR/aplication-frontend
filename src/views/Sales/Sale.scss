@@ -1,5 +1,5 @@
 .title{
-    margin-left: 30px;
+    margin-left: 30px !important;
     margin-bottom: 30px;
     display: flex;
     width: 30%;
@@ -22,6 +22,15 @@
       border-radius: 5px;
 }
 
+/*
+.search-bar {
+    margin-left: 10px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}*/
+
 .m_button{
     margin-left: 10px;
     background: rgba(46, 6, 99, 0.31);
@@ -30,8 +39,16 @@
     border-radius: 5px;
 }
 
-.title2{
-    margin-left: 100px;    
+.title2_anr{
+    margin-left: 100px !important;    
+}
+
+.title2_rd{
+    margin-left: 120px !important;  
+}
+
+.title2_p{
+    margin-left: 120px !important;    
 }
 
 .title3{
@@ -67,13 +84,117 @@
 }
 
 .b_close{
-    background:rgba(46, 6, 99, 0.31);
-    border: solid 1px #000000; 
-    border-radius: 5px;
+    background:rgba(46, 6, 99, 0.31) !important;
+    border: solid 1px #000000 !important; 
+    border-radius: 5px !important;
+    margin-left: 150px;
+    
+
+    &:hover{
+        background:rgba(183, 171, 199, 0.31);
+        cursor: pointer;
+        border: solid 1px #000000; 
+    }
 }
 
 .b_save{
     background:rgba(46, 6, 99, 0.31);
     border: solid 1px #000000; 
     border-radius: 5px;
+    margin-left: 20px;
+    padding: 5px;
+    padding-bottom: 8px;
+    padding-left: 13px;
+    padding-right: 13px;
+    margin-top: 10px;
+
+    &:hover{
+        background:rgba(183, 171, 199, 0.31);
+        cursor: pointer;
+    }
 }
+
+.b_close2{
+    background:rgba(46, 6, 99, 0.31) !important;
+    border: solid 1px #000000 !important; 
+    border-radius: 5px;
+
+}
+
+.b_expiration{
+    margin-left: 30px;
+    width: 86%;
+    margin-top: 20px;
+}
+
+.b_payment{
+    margin-left: 30px;
+    width: 86%;
+    margin-bottom: 20px;
+}
+
+.b_add_product{
+    margin-left: 30px;
+    background: rgba(46, 6, 99, 0.31);
+    border: solid 1px #000000;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.b_product, .b_amount, .b_subtotal{
+    margin-left: 30px;
+    width: 86%;
+    margin-bottom: 20px;
+}
+
+.b_product{
+    margin-top: 50px;
+}
+
+.b_subtotal{
+    margin-bottom: 30px;
+}
+
+.b_save_product{
+    margin-left: 160px;
+    background: rgba(46, 6, 99, 0.31) !important;
+    border: solid 1px #000000 !important;
+    padding: 5px 10px;
+    border-radius: 5px;
+    margin-bottom: 40px;
+}
+
+.b_payment2{
+    margin-left: 10px;
+    background:rgba(46, 6, 99, 0.31) !important;
+    border: solid 1px #000000 !important;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.m_edit input button{
+    display: inline-block;
+    margin-bottom: 20px;
+    margin: 0px !important;
+}
+.m_edit input{
+    margin-left: 10px !important;
+}
+.m_edit p{
+    margin-bottom: 10px;
+    margin-top: 5px;
+    margin-left: 10px;
+}
+
+.t_edit{
+    margin: 0px !important;
+    margin-left: 30% !important; 
+}
+
+.p_edit input{
+    margin-bottom: 20px;
+    margin-left: 0px;
+}
+
+
+
