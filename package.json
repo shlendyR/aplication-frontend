@@ -13,6 +13,8 @@
   "license": "MIT",
   "author": "The CoreUI Team (https://github.com/orgs/coreui/people)",
   "scripts": {
+    "dev": "vite",
+    "json-server": "json-server --watch db.json --port 8000",
     "build": "vite build",
     "lint": "eslint",
     "serve": "vite preview",
@@ -35,7 +37,7 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-redux": "^9.2.0",
-    "react-router-dom": "^7.1.5",
+    "react-router-dom": "^7.5.0",
     "redux": "5.0.1",
     "simplebar-react": "^3.3.0"
   },

@@ -1,205 +1,359 @@
 {
   "category": [
     {
-      "id_category": 1,
-      "name_category": "Ropa Deportiva Dama",
-      "image": "src/assets/my_images/category/gerardo-marrufo-zy_0bbpbvBU-unsplash.jpg"
+      "name_category": "Ropa Deportiva Damaaa",
+      "image": "src/assets/my_images/category/gerardo-marrufo-zy_0bbpbvBU-unsplash.jpg",
+      "id": "df67"
     },
     {
-      "id_category": 2,
       "name_category": "Ropa Deportiva Caballero",
-      "image": "src/assets/my_images/category/ashkan-forouzani-zZizuTAJ8HU-unsplash.jpg"
+      "image": "src/assets/my_images/category/ashkan-forouzani-zZizuTAJ8HU-unsplash.jpg",
+      "id": "b60a"
     },
     {
-      "id_category": 3,
       "name_category": "Morralería",
-      "image": "src/assets/my_images/category/wiser-by-the-mile-1Frndjy7tkM-unsplash.jpg"
+      "image": "src/assets/my_images/category/wiser-by-the-mile-1Frndjy7tkM-unsplash.jpg",
+      "id": "b60b"
     },
     {
-      "id_category": 4,
       "name_category": "Zapato AAA",
-      "image": "src/assets/my_images/category/scott-elkins-W-C4JRidLPc-unsplash.jpg"
+      "image": "src/assets/my_images/category/scott-elkins-W-C4JRidLPc-unsplash.jpg",
+      "id": "30f1"
     }
   ],
   "product": [
     {
-      "id_product": 1,
       "description": "Leggins Deportivos Mujer",
-      "price_sale": 40.0,
-      "cost_price": 25.0,
+      "price_sale": 40,
+      "cost_price": 25,
       "stock": 75,
-      "id_category": 1
+      "id_category": "df67",
+      "id": "53c7",
+      "id_supplier": 1
     },
     {
-      "id_product": 2,
       "description": "short push up marmol",
-      "price_sale": 40.0,
-      "cost_price": 25.0,
+      "price_sale": 40,
+      "cost_price": 25,
       "stock": 75,
-      "id_category": 1
+      "id_category": "df67",
+      "id": "5e13",
+      "id_supplier": 2
     },
     {
-      "id_product": 3,
       "description": "enterizo de short",
-      "price_sale": 40.0,
-      "cost_price": 25.0,
+      "price_sale": 40,
+      "cost_price": 25,
       "stock": 75,
-      "id_category": 1
+      "id_category": "df67",
+      "id": "ab36",
+      "id_supplier": 3
     },
     {
-      "id_product": 4,
       "description": "vestido deportivo",
-      "price_sale": 40.0,
-      "cost_price": 25.0,
+      "price_sale": 40,
+      "cost_price": 25,
       "stock": 75,
-      "id_category": 1
+      "id_category": "df67",
+      "id": "a4f3",
+      "id_supplier": 4
     },
-
     {
-      "id_product": 5,
       "description": "sudadera deportiva manga larga hombre",
-      "price_sale": 40.0,
-      "cost_price": 25.0,
+      "price_sale": 40,
+      "cost_price": 25,
       "stock": 75,
-      "id_category": 2
+      "id_category": "b60a",
+      "id": "31fa",
+      "id_supplier": 5
     },
     {
-      "id_product": 6,
       "description": "Camiseta Deportiva Hombre",
-      "price_sale": 35.0,
-      "cost_price": 20.0,
+      "price_sale": 35,
+      "cost_price": 20,
       "stock": 100,
-      "id_category": 2
+      "id_category": "b60a",
+      "id": "d5e5",
+      "id_supplier": 6
     },
     {
-      "id_product": 7,
       "description": "short depor con licra interna",
-      "price_sale": 35.0,
-      "cost_price": 20.0,
+      "price_sale": 35,
+      "cost_price": 20,
       "stock": 100,
-      "id_category": 2
+      "id_category": "b60a",
+      "id": "e8e5",
+      "id_supplier": 7
     },
     {
-      "id_product": 8,
       "description": "flanelillas",
-      "price_sale": 35.0,
-      "cost_price": 20.0,
+      "price_sale": 35,
+      "cost_price": 20,
       "stock": 100,
-      "id_category": 2
+      "id_category": "b60a",
+      "id": "9410",
+      "id_supplier": 8
     },
-
     {
-      "id_product": 9,
       "description": "Morral ejecutivo",
-      "price_sale": 45.0,
-      "cost_price": 30.0,
+      "price_sale": 45,
+      "cost_price": 30,
       "stock": 60,
-      "id_category": 3
+      "id_category": "b60b",
+      "id": "34b6",
+      "id_supplier": 1
     },
     {
-      "id_product": 10,
       "description": "Morral escolar",
-      "price_sale": 45.0,
-      "cost_price": 30.0,
+      "price_sale": 45,
+      "cost_price": 30,
       "stock": 60,
-      "id_category": 3
+      "id_category": "b60b",
+      "id": "acdd",
+      "id_supplier": 2
     },
     {
-      "id_product": 11,
       "description": "Morral de gymnasio",
-      "price_sale": 45.0,
-      "cost_price": 30.0,
+      "price_sale": 45,
+      "cost_price": 30,
       "stock": 60,
-      "id_category": 3
+      "id_category": "b60b",
+      "id": "f000",
+      "id_supplier": 3
     },
-
     {
-      "id_product": 12,
       "description": "adidas bad bonny",
-      "price_sale": 120.0,
-      "cost_price": 80.0,
+      "price_sale": 120,
+      "cost_price": 80,
       "stock": 30,
-      "id_category": 4
+      "id_category": "30f1",
+      "id": "287d",
+      "id_supplier": 4
     },
     {
-      "id_product": 13,
       "description": "nike travis scott",
-      "price_sale": 45.0,
-      "cost_price": 30.0,
+      "price_sale": 45,
+      "cost_price": 30,
       "stock": 60,
-      "id_category": 4
+      "id_category": "30f1",
+      "id": "6e3c",
+      "id_supplier": 5
     },
     {
-      "id_product": 14,
       "description": "jordan retro 3 j balvin",
-      "price_sale": 45.0,
-      "cost_price": 30.0,
+      "price_sale": 45,
+      "cost_price": 30,
       "stock": 60,
-      "id_category": 4
+      "id_category": "30f1",
+      "id": "4b59",
+      "id_supplier": 6
     }
   ],
   "role": [
     {
       "id_role": 1,
       "name_role": "admin",
-      "image": "src/assets/my_images/category/user/images-users/undraw_finance-guy-avatar_vhop.svg"
+      "image": "src/assets/my_images/category/user/images-users/undraw_finance-guy-avatar_vhop.svg",
+      "id": "c5bb"
     },
     {
       "id_role": 2,
       "name_role": "pesales staff",
-      "image": "src/assets/my_images/category/user/images-users/undraw_young-man-avatar_wgbd (1).svg"
+      "image": "src/assets/my_images/category/user/images-users/undraw_young-man-avatar_wgbd (1).svg",
+      "id": "dad5"
     }
   ],
   "user": [
     {
-      "id_user": 1,
-      "user_name": "Carlos Pérez",
-      "email": "carlos.perez@example.com",
+      "user_name": "Camila Rincon",
+      "email": "shlendyrincon13@gmail.com",
       "password": 123456,
       "phone": "04141234567",
-      "birthdate": "1990-05-15",
-      "id_role": 1
+      "birthdate": "2002-05-13",
+      "id_role": 1,
+      "id": "3f09"
     },
     {
-      "id_user": 2,
-      "user_name": "Camila Rincón",
-      "email": "carlos.perez@example.com",
+      "user_name": "Alvaro Rincon",
+      "email": "alvaritorincon@gmail.com",
       "password": 123456,
       "phone": "04141234567",
-      "birthdate": "1990-05-15",
-      "id_role": 2
+      "birthdate": "2002-05-13",
+      "id_role": 2,
+      "id": "49a5"
     },
     {
-      "id_user": 100,
-      "user_name": "q",
-      "email": "1",
-      "password": 111,
+      "user_name": "Valmore Duque",
+      "email": "valmoreDuq@gmail.com",
+      "password": 123456,
       "phone": "04141234567",
-      "birthdate": "1990-05-15",
-      "id_role": 2
+      "birthdate": "2002-05-13",
+      "id_role": 2,
+      "id": "5c35"
     }
   ],
   "sales": [
     {
-      "id_sale": 2,
+      "id_sales": 1,
+      "fecha": "2025-05-01T10:30:00",
+      "total": 150.75,
       "id_user": 2,
-      "date": "2025-04-02",
-      "total": "500,00",
-      "description": "venta 1",
-      "status": "Paid",
-      "payment": "Effective"
+      "id_customer": 5,
+      "id": "bda4"
     },
     {
-      "id_sale": 1,
-      "id_user": 1,
-      "date": "2025-04-01",
-      "total": "320,00",
-      "description": "venta pendiente",
-      "status": "Pending",
-      "payment": "Credit Card"
+      "id_sales": 2,
+      "fecha": "2025-05-02T14:15:00",
+      "total": 320.5,
+      "id_user": 3,
+      "id_customer": 7,
+      "id": "22a9"
+    },
+    {
+      "id_sales": 3,
+      "fecha": "2025-05-03T09:45:00",
+      "total": 89.99,
+      "id_user": 2,
+      "id_customer": 6,
+      "id": "b44c"
+    },
+    {
+      "id_sales": 4,
+      "fecha": "2025-05-04T17:20:00",
+      "total": 450,
+      "id_user": 4,
+      "id_customer": 8,
+      "id": "a16f"
+    },
+    {
+      "id_sales": 5,
+      "fecha": "2025-05-05T12:00:00",
+      "total": 210.3,
+      "id_user": 3,
+      "id_customer": 5,
+      "id": "7f5b"
     }
   ],
-  "sale_detail": [
+  "expense_category": [
+    {
+      "id": "1",
+      "name": "Rent",
+      "description": "Monthly office or facility rental payments"
+    },
+    {
+      "id": "2",
+      "name": "Utilities",
+      "description": "Electricity, water, internet, and other service bills"
+    },
+    {
+      "id": "3",
+      "name": "Office Supplies",
+      "description": "Purchases of paper, pens, ink, and other office materials"
+    },
+    {
+      "id": "4",
+      "name": "Maintenance",
+      "description": "Equipment repairs, cleaning services, and maintenance tasks"
+    },
+    {
+      "id": "5",
+      "name": "Transportation",
+      "description": "Travel costs, fuel, or delivery expenses"
+    }
+  ],
+  "expenses": [
+    {
+      "id": "1",
+      "amount": 120.5,
+      "expense_category_id": 3,
+      "description": "Purchase of office supplies",
+      "status": "paid",
+      "payment_method": "credit card"
+    },
+    {
+      "id": "2",
+      "amount": 450,
+      "expense_category_id": 1,
+      "description": "Rent payment",
+      "status": "pending",
+      "payment_method": "bank transfer"
+    },
+    {
+      "id": "3",
+      "amount": 75.2,
+      "expense_category_id": 4,
+      "description": "Utility services (water, electricity)",
+      "status": "paid",
+      "payment_method": "cash"
+    },
+    {
+      "id": "4",
+      "amount": 300,
+      "expense_category_id": 2,
+      "description": "Equipment maintenance",
+      "status": "pending",
+      "payment_method": "check"
+    },
+    {
+      "id": "5",
+      "amount": 95.75,
+      "expense_category_id": 5,
+      "description": "Transportation expenses",
+      "status": "paid",
+      "payment_method": "debit card"
+    }
+  ],
+  "supplier": [
+    {
+      "id_suppliers": 1,
+      "name": "Distribuidora El Sol",
+      "number": "0412-1234567",
+      "id": "2771"
+    },
+    {
+      "id_suppliers": 2,
+      "name": "Proveeduría Andina",
+      "number": "0424-7654321",
+      "id": "f78b"
+    },
+    {
+      "id_suppliers": 3,
+      "name": "Suministros Globales",
+      "number": "0416-5557890",
+      "id": "15e8"
+    },
+    {
+      "id_suppliers": 4,
+      "name": "Comercializadora Los Llanos",
+      "number": "0414-3332211",
+      "id": "e5a5"
+    },
+    {
+      "id_suppliers": 5,
+      "name": "Importadora Caribe",
+      "number": "0426-9988776",
+      "id": "4002"
+    },
+    {
+      "id_suppliers": 6,
+      "name": "Almacenes del Centro",
+      "number": "0412-4445566",
+      "id": "cb78"
+    },
+    {
+      "id_suppliers": 7,
+      "name": "Proveeduría Industrial",
+      "number": "0424-1122334",
+      "id": "8d8c"
+    },
+    {
+      "id_suppliers": 8,
+      "name": "Servicios Comerciales del Sur",
+      "number": "0416-7788990",
+      "id": "b553"
+    }
+  ],
+   "sale_detail": [
     {
       "id_sale_detail": 1,
       "amount": 20,
@@ -270,6 +424,7 @@
       "id_provider": 1
     }    
   ],
+  
   "investment_detail":[
     {
       "id_investment_detail": 1,
@@ -294,4 +449,3 @@
     }
   ]
 }
-

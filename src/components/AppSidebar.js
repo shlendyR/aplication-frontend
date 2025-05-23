@@ -13,8 +13,11 @@ import CIcon from '@coreui/icons-react'
 
 import { AppSidebarNav } from './AppSidebarNav'
 
-import { logo } from 'src/assets/brand/logo'
+//import { logo } from 'src/assets/brand/logo' // Elimina esta línea
 import { sygnet } from 'src/assets/brand/sygnet'
+
+// Importa tu logo personalizado
+import myLogo from 'src/assets/my_images/logo/pngwing.com.png'
 
 // sidebar nav config
 import navigation from '../_nav'
@@ -37,7 +40,12 @@ const AppSidebar = () => {
     >
       <CSidebarHeader className="border-bottom">
         <CSidebarBrand to="/">
-          <CIcon customClassName="sidebar-brand-full" icon={logo} height={32} />
+          <img // Reemplaza CIcon con img
+            src={myLogo}
+            className="sidebar-brand-full"
+            height={80}
+            alt="Logo Completo"
+          />
           <CIcon customClassName="sidebar-brand-narrow" icon={sygnet} height={32} />
         </CSidebarBrand>
         <CCloseButton
