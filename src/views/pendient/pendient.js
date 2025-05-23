@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableDataCell, CButton, CContainer, CRow, CCol, CModal, CModalHeader, CModalBody, CModalFooter, CFormInput } from "@coreui/react";
 import "./pendient.scss";
+import { fetchItems, createItem, updateItem, deleteItem } from "../../services/api";
 
 const Pending = () => {
 
@@ -35,77 +36,60 @@ const Pending = () => {
     }
 
     useEffect(() => {
-      const fetchData = async () => {
-        try {
-          // Fetch pending sales
-          const salesResponse = await fetch("http://localhost:3001/sales");
-          if (!salesResponse.ok) {
-            throw new Error(`HTTP error! status: ${salesResponse.status}`);
-          }
-          const salesData = await salesResponse.json();
-    
-          // Filter only pending sales
-          const pending = salesData.filter((sale) => sale.status === "Pending");
-          setPendingSales(pending);
-    
-          // Fetch users
-          const usersResponse = await fetch("http://localhost:3001/user");
-          if (!usersResponse.ok) {
-            throw new Error(`HTTP error! status: ${usersResponse.status}`);
-          }
-          const usersData = await usersResponse.json();
-    
-          // Map id_user to user_name
-          const usersMap = {};
-          usersData.forEach((user) => {
-            usersMap[user.id_user] = user.user_name;
-          });
-          setUsersMap(usersMap);
-    
-          // Fetch accounts receivable
-          const accountsReceivableResponse = await fetch("http://localhost:3001/accounts_receivable");
-          if (!accountsReceivableResponse.ok) {
-            throw new Error(`HTTP error! status: ${accountsReceivableResponse.status}`);
-          }
-          const accountsReceivableData = await accountsReceivableResponse.json();
-    
-          // Map id_sale to expiration_date
-          const accountsReceivableMap = {};
-          accountsReceivableData.forEach((account) => {
-            accountsReceivableMap[account.id_sale] = account.expiration_date;
-          });
-          setAccountsReceivableMap(accountsReceivableMap);
-    
-          // Fetch payment details
-          const paymentResponse = await fetch("http://localhost:3001/payment");
-          if (!paymentResponse.ok) {
-            throw new Error(`HTTP error! status: ${paymentResponse.status}`);
-          }
-          const paymentData = await paymentResponse.json();
-    
-          // Set payment details
-          setPaymentDetails(paymentData);
-        } catch (error) {
-          console.error("Error al cargar los datos:", error.message);
-        }
-      };
-    
-      fetchData();
-    }, []);
+  const loadPayments = async () => {
+    try {
+      const payments = await fetchItems(); // Llama a fetchItems para obtener los datos
+      setPaymentDetails(payments.filter((payment) => payment.id_sale === selectedRecord?.id_sale)); // Filtra los pagos por id_sale
+    } catch (error) {
+      console.error("Error al cargar los pagos:", error.message);
+    }
+  };
+
+  if (selectedRecord) {
+    loadPayments();
+  }
+}, [selectedRecord]);
     
 
-    const handleEditPayment = (index) => {
-      setPaymentToEdit(paymentDetails[index]);
-      setEditIndex(index);
-      setEditModalOpen(true);
-    };
+const handleEditPayment = async () => {
+  if (!paymentToEdit) {
+    alert("No payment selected for editing.");
+    return;
+  }
 
-    const handleDeletePayment = (index) => {
-      setPaymentToDelete(index); // Configura el índice del registro a eliminar
-      setDeleteModalOpen(true); // Abre el modal de confirmación
-    };
+  try {
+    const updatedPayment = await updateItem(paymentToEdit.id, paymentToEdit); // Llama a updateItem
+    setPaymentDetails(
+      paymentDetails.map((payment) =>
+        payment.id === updatedPayment.id ? updatedPayment : payment
+      )
+    ); // Actualiza el estado con el pago editado
+    setEditModalOpen(false);
+  } catch (error) {
+    console.error("Error al actualizar el pago:", error.message);
+  }
+};
 
-    const handleAddRecord = () => {
+const handleDeletePayment = async (index) => {
+  const paymentToDelete = paymentDetails[index]; // Obtén el pago a eliminar
+
+  if (!paymentToDelete || !paymentToDelete.id) {
+    alert("No se puede eliminar el registro porque no tiene un ID válido.");
+    return;
+  }
+
+  try {
+    await deleteItem(paymentToDelete.id); // Llama a deleteItem
+    setPaymentDetails(paymentDetails.filter((_, i) => i !== index)); // Elimina el pago del estado
+    setDeleteModalOpen(false);
+    alert("Registro eliminado correctamente.");
+  } catch (error) {
+    console.error("Error al eliminar el pago:", error.message);
+    alert("Hubo un error al intentar eliminar el registro.");
+  }
+};
+
+    const handleAddRecord = async () => {
       if (!newPayment.paymentDate || !newPayment.amountPaid || !newPayment.paymentMethod) {
         alert("Please fill in all payment fields.");
         return;
@@ -115,14 +99,17 @@ const Pending = () => {
         payment_date: newPayment.paymentDate,
         amount_paid: newPayment.amountPaid,
         payment_method: newPayment.paymentMethod,
+        id_sale: selectedRecord.id_sale, // Relaciona el pago con el registro seleccionado
       };
     
-      // Actualiza el estado de paymentDetails
-      setPaymentDetails((prevDetails) => [...prevDetails, newRecord]);
-    
-      // Restablece el formulario de pago
-      setNewPayment({ paymentDate: "", amountPaid: "", paymentMethod: "" });
-      setIsModalOpen(false);
+      try {
+        const createdPayment = await createItem(newRecord); // Llama a createItem
+        setPaymentDetails([...paymentDetails, createdPayment]); // Agrega el nuevo pago al estado
+        setNewPayment({ paymentDate: "", amountPaid: "", paymentMethod: "" });
+        setIsModalOpen(false);
+      } catch (error) {
+        console.error("Error al agregar el pago:", error.message);
+      }
     };
 
       const handleInputChange = (e) => {
@@ -366,6 +353,7 @@ const Pending = () => {
             onClick={() => {
               const updatedPayments = paymentDetails.filter((_, i) => i !== paymentToDelete);
               setPaymentDetails(updatedPayments); // Actualiza el estado eliminando el registro
+              handleDeletePayment(index);
               setDeleteModalOpen(false); // Cierra el modal
             }}
           >

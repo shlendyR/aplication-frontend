@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
-import { CModal, CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableDataCell} from "@coreui/react";
+import React, { useState } from "react";
+import { CModal, CTable, CTableHead, CTableRow, CTableHeaderCell, CTableDataCell} from "@coreui/react";
 import "./Sale.scss";
 import { CModalHeader, CModalBody,CModalFooter,CButton} from '@coreui/react';
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
+import { fetchItems, createItem, updateItem, deleteItem, fetchUsers, fetchProduct, fetchProducts } from "../../services/api";
 
 
 const Sales = () => {
@@ -17,6 +18,7 @@ const Sales = () => {
     { key: "vm", label: "View More" },
   ];
 
+  
   const [saleDetails, setSaleDetails] = useState([]); 
   const [productsMap, setProductsMap] = useState({});
   const [accountsReceivableMap, setAccountsReceivableMap] = useState({});
@@ -43,85 +45,79 @@ const Sales = () => {
   const [newProduct, setNewProduct] = useState({ product: "", amount: "", subtotal: "" }); 
 
   useEffect(() => {
-    const fetchData = async () => {
+    const loadUsers = async () => {
       try {
-        // Fetch sales data
-        const salesResponse = await fetch("http://localhost:3001/sales");
-        if (!salesResponse.ok) {
-          throw new Error(`HTTP error! status: ${salesResponse.status}`);
-        }
-        const salesData = await salesResponse.json();
-        setItems(salesData);
-        setFilteredItems(salesData);
-  
-        // Fetch sale details
-        const saleDetailsResponse = await fetch("http://localhost:3001/sale_detail");
-        if (!saleDetailsResponse.ok) {
-          throw new Error(`HTTP error! status: ${saleDetailsResponse.status}`);
-        }
-        const saleDetailsData = await saleDetailsResponse.json();
-        setSaleDetails(saleDetailsData);
-  
-        // Fetch products
-        const productsResponse = await fetch("http://localhost:3001/product");
-        if (!productsResponse.ok) {
-          throw new Error(`HTTP error! status: ${productsResponse.status}`);
-        }
-        const productsData = await productsResponse.json();
-  
-        // Map id_product to description
-        const productsMap = {};
-        productsData.forEach((product) => {
-          productsMap[product.id_product] = product.description;
-        });
-        setProductsMap(productsMap);
-  
-        // Fetch accounts receivable
-        const accountsReceivableResponse = await fetch("http://localhost:3001/accounts_receivable");
-        if (!accountsReceivableResponse.ok) {
-          throw new Error(`HTTP error! status: ${accountsReceivableResponse.status}`);
-        }
-        const accountsReceivableData = await accountsReceivableResponse.json();
-  
-        // Map id_sale to expiration_date
-        const accountsReceivableMap = {};
-        accountsReceivableData.forEach((account) => {
-          accountsReceivableMap[account.id_sale] = account.expiration_date;
-        });
-        setAccountsReceivableMap(accountsReceivableMap);
-  
-        // Fetch users
-        const usersResponse = await fetch("http://localhost:3001/user");
-        if (!usersResponse.ok) {
-          throw new Error(`HTTP error! status: ${usersResponse.status}`);
-        }
-        const usersData = await usersResponse.json();
-  
-        // Map id_user to user_name
+        const usersData = await fetchUser(); // Llama a fetchUsers
         const usersMap = {};
         usersData.forEach((user) => {
-          usersMap[user.id_user] = user.user_name;
+          usersMap[user.id_user] = user.user_name; // Mapea id_user a user_name
         });
-        setUsers(usersMap);
+        setUsers(usersMap); // Guarda el mapa en el estado
       } catch (error) {
-        console.error("Error al cargar los datos:", error.message);
+        console.error("Error al cargar los usuarios:", error.message);
       }
     };
   
-    fetchData();
+    const loadSales = async () => {
+      try {
+        const salesData = await fetchItems(); // Llama a fetchItems
+        setItems(salesData);
+        setFilteredItems(salesData);
+      } catch (error) {
+        console.error("Error al cargar las ventas:", error.message);
+      }
+    };
+
+    const loadSaleDetails = async () => {
+      try {
+        const detailsData = await fetchProduct(); // Llama a fetchProduct
+        setSaleDetails(detailsData); // Guarda los detalles en el estado
+      } catch (error) {
+        console.error("Error al cargar los detalles de las ventas:", error.message);
+      }
+    };
+
+    
+      const loadProducts = async () => {
+        try {
+          const productsData = await fetchProducts(); // Llama a fetchProducts
+          const map = {};
+          productsData.forEach((product) => {
+            map[product.id_product] = product.name; // Mapea id_product al nombre del producto
+          });
+          setProductsMap(map); // Guarda el mapa en el estado
+        } catch (error) {
+          console.error("Error al cargar los productos:", error.message);
+        }
+      };
+    
+     
+  
+  
+    loadUsers();
+    loadSales();
+    loadSaleDetails();
+    loadProducts();
   }, []);
 
+
+  
   const handleDeleteRecord = (item) => {
     setRecordToDelete(item);
     setDeleteModalVisible(true);
   };
   
-  const confirmDeleteRecord = () => {
-    // Elimina el registro de items y saleDetails
-    setItems(items.filter((item) => item.id_sale !== recordToDelete.id_sale));
-    setFilteredItems(filteredItems.filter((item) => item.id_sale !== recordToDelete.id_sale));
-    setSaleDetails(saleDetails.filter((detail) => detail.id_sale !== recordToDelete.id_sale));
-    setDeleteModalVisible(false);
+  const confirmDeleteRecord = async () => {
+    try {
+      await deleteItem(recordToDelete.id_sale); // Llama a deleteItem
+      setItems(items.filter((item) => item.id_sale !== recordToDelete.id_sale)); // Elimina el registro del estado
+      setFilteredItems(filteredItems.filter((item) => item.id_sale !== recordToDelete.id_sale));
+      setDeleteModalVisible(false);
+      alert("Registro eliminado correctamente.");
+    } catch (error) {
+      console.error("Error al eliminar la venta:", error.message);
+      alert("Hubo un error al intentar eliminar el registro.");
+    }
   };
 
   const handleEditRecord = (item) => {
@@ -136,31 +132,17 @@ const Sales = () => {
     setEditModalVisible(true);
   };
   
-  const handleEditSubmit = (event) => {
+  const handleEditSubmit = async (event) => {
     event.preventDefault();
   
-    // Actualiza el registro en items
-    const updatedItems = items.map((item) =>
-      item.id_sale === recordToEdit.id_sale ? { ...recordToEdit } : item
-    );
-    setItems(updatedItems);
-    setFilteredItems(updatedItems);
-  
-    // Actualiza los detalles de la venta
-    const updatedSaleDetails = saleDetails.filter(
-      (detail) => detail.id_sale !== recordToEdit.id_sale
-    );
-    editProducts.forEach((product) => {
-      updatedSaleDetails.push({
-        id_sale: recordToEdit.id_sale,
-        id_product: parseInt(product.product),
-        amount: product.amount,
-        subtotal: product.subtotal,
-      });
-    });
-    setSaleDetails(updatedSaleDetails);
-  
-    setEditModalVisible(false);
+    try {
+      const updatedSale = await updateItem(recordToEdit.id_sale, recordToEdit); // Llama a updateItem
+      setItems(items.map((item) => (item.id_sale === updatedSale.id_sale ? updatedSale : item))); // Actualiza el estado
+      setFilteredItems(filteredItems.map((item) => (item.id_sale === updatedSale.id_sale ? updatedSale : item)));
+      setEditModalVisible(false);
+    } catch (error) {
+      console.error("Error al actualizar la venta:", error.message);
+    }
   };
 
 
@@ -193,42 +175,28 @@ const Sales = () => {
     setNewRecord({ ...newRecord, [name]: value });
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
   
-    const newId = items.length > 0 ? Math.max(...items.map((item) => item.id_sale)) + 1 : 1;
-    const newItem = {
-      ...newRecord,
-      id_sale: newId,
-      expirationDate: newRecord.status === "Pending" ? expirationDate : null,
+    const newSale = {
+      id_user: newRecord.id_user,
+      date: newRecord.date,
+      total: newRecord.total,
+      status: newRecord.status,
       payment: newRecord.payment,
+      expirationDate: newRecord.status === "Pending" ? expirationDate : null,
     };
   
-    // Agregar los productos al estado saleDetails
-    const newSaleDetails = products.map((product) => ({
-      id_sale: newId,
-      id_product: parseInt(product.product), // Asegúrate de que sea un número
-      amount: product.amount,
-      subtotal: product.subtotal,
-    }));
-  
-    // Actualizar accountsReceivableMap si el estado es "Pending"
-    if (newRecord.status === "Pending") {
-      setAccountsReceivableMap((prevMap) => ({
-        ...prevMap,
-        [newId]: expirationDate, // Agrega la nueva expiration_date al mapeo
-      }));
+    try {
+      const createdSale = await createItem(newSale); // Llama a createItem
+      setItems([...items, createdSale]); // Agrega el nuevo registro al estado
+      setFilteredItems([...filteredItems, createdSale]); // Actualiza los datos filtrados
+      setNewRecord({ id_user: "", date: "", total: "", status: "", payment: "" });
+      setExpirationDate("");
+      setvisible(false);
+    } catch (error) {
+      console.error("Error al crear la venta:", error.message);
     }
-  
-    setSaleDetails([...saleDetails, ...newSaleDetails]); // Actualiza saleDetails con los nuevos productos
-    setItems([newItem, ...items]); // Agrega el nuevo registro a items
-    setFilteredItems([newItem, ...items]); // Actualiza filteredItems
-  
-    // Restablece el formulario
-    setNewRecord({ id_sale: "", id_user: "", total: "", date: "", status: "", payment: "" });
-    setExpirationDate("");
-    setProducts([]);
-    setvisible(false);
   };
   
   const handleAddRecord = () => {
@@ -338,7 +306,7 @@ const Sales = () => {
 
 
           <CModal visible={productModalVisible} onClose={() => setProductModalVisible(false)}>
-      <CModalHeader>
+      <>
         <h2 className="title2_p">Add Product</h2>
       </CModalHeader>
       <CModalBody>
@@ -390,7 +358,7 @@ const Sales = () => {
     {selectedRecord && (
       <div>
 
-        {/* {selectedRecord.products && selectedRecord.products.length > 0 && ( */}
+        
           <div>
             <h3>Products</h3>
             <CTable hover>
@@ -412,9 +380,9 @@ const Sales = () => {
                         </CTableRow>
                       ))}
 
-                {/* {selectedRecord && ( */}
+                
                   <p className="P_M" style={{marginTop: "20px"}}><strong>Payment Method:</strong> {selectedRecord.payment || "N/A"}</p>
-                {/* )} */}
+               
 
                 {selectedRecord.status === "Pending" && (
                     <CTableRow>
@@ -598,7 +566,7 @@ const Sales = () => {
     <button
       type="button"
       onClick={() =>
-        setEditProducts(editProducts.filter((_, i) => i !== index)) // Elimina el producto del estado
+        setEditProducts(editProducts.filter((_, i) => i !== index)) 
       }
       style={{
         background: "rgba(201, 4, 4, 0.42)",
@@ -642,9 +610,11 @@ const Sales = () => {
 
       <CTable
         columns={columns}
-        items={filteredItems.map((item) => ({
+        items={[...filteredItems]
+          .sort((a, b) => b.id_sale - a.id_sale)
+          .map((item) => ({
           ...item,
-          id_user: users[item.id_user] || "Unknown", // Muestra el user_name correspondiente
+          id_user: users[item.id_user] || "Unknown", 
           vm: (
             <>
         <button

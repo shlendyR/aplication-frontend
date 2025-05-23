@@ -194,25 +194,16 @@
   ],
   "sales": [
     {
-      "id_sales": 1,
-      "fecha": "2025-05-01T10:30:00",
-      "total": 150.75,
-      "id_user": 2,
-      "id_customer": 5,
-      "id": "bda4"
+      "id_sale": 1,
+      "id_user": 1,
+      "date": "2025-04-01",
+      "total": "320,00",
+      "description": "venta pendiente",
+      "status": "Pending",
+      "payment": "Credit Card"
     },
     {
-      "id_sales": 2,
-      "fecha": "2025-05-02T14:15:00",
-      "total": 320.5,
-      "id_user": 3,
-      "id_customer": 7,
-      "id": "22a9"
-    },
-    {
-      "id_sales": 3,
-      "fecha": "2025-05-03T09:45:00",
-      "total": 89.99,
+      "id_sale": 2,
       "id_user": 2,
       "id_customer": 6,
       "id": "b44c"
@@ -256,105 +247,18 @@
       "description": "Equipment repairs, cleaning services, and maintenance tasks"
     },
     {
-      "id": "5",
-      "name": "Transportation",
-      "description": "Travel costs, fuel, or delivery expenses"
-    }
-  ],
-  "expenses": [
-    {
-      "id": "1",
-      "amount": 120.5,
-      "expense_category_id": 3,
-      "description": "Purchase of office supplies",
-      "status": "paid",
-      "payment_method": "credit card"
-    },
-    {
-      "id": "2",
-      "amount": 450,
-      "expense_category_id": 1,
-      "description": "Rent payment",
-      "status": "pending",
-      "payment_method": "bank transfer"
-    },
-    {
-      "id": "3",
-      "amount": 75.2,
-      "expense_category_id": 4,
-      "description": "Utility services (water, electricity)",
-      "status": "paid",
-      "payment_method": "cash"
-    },
-    {
-      "id": "4",
-      "amount": 300,
-      "expense_category_id": 2,
-      "description": "Equipment maintenance",
-      "status": "pending",
-      "payment_method": "check"
-    },
-    {
-      "id": "5",
-      "amount": 95.75,
-      "expense_category_id": 5,
-      "description": "Transportation expenses",
-      "status": "paid",
-      "payment_method": "debit card"
-    }
-  ],
-  "supplier": [
-    {
-      "id_suppliers": 1,
-      "name": "Distribuidora El Sol",
-      "number": "0412-1234567",
-      "id": "2771"
-    },
-    {
-      "id_suppliers": 2,
-      "name": "Proveeduría Andina",
-      "number": "0424-7654321",
-      "id": "f78b"
-    },
-    {
-      "id_suppliers": 3,
-      "name": "Suministros Globales",
-      "number": "0416-5557890",
-      "id": "15e8"
-    },
-    {
-      "id_suppliers": 4,
-      "name": "Comercializadora Los Llanos",
-      "number": "0414-3332211",
-      "id": "e5a5"
-    },
-    {
-      "id_suppliers": 5,
-      "name": "Importadora Caribe",
-      "number": "0426-9988776",
-      "id": "4002"
-    },
-    {
-      "id_suppliers": 6,
-      "name": "Almacenes del Centro",
-      "number": "0412-4445566",
-      "id": "cb78"
-    },
-    {
-      "id_suppliers": 7,
-      "name": "Proveeduría Industrial",
-      "number": "0424-1122334",
-      "id": "8d8c"
-    },
-    {
-      "id_suppliers": 8,
-      "name": "Servicios Comerciales del Sur",
-      "number": "0416-7788990",
-      "id": "b553"
+      "id": "6fc8",
+      "id_user": "1",
+      "date": "2025-05-08",
+      "total": "140,00",
+      "status": "Paid",
+      "payment": "Effective",
+      "expirationDate": null
     }
   ],
    "sale_detail": [
     {
+      "id": "2c6c",
       "id_sale_detail": 1,
       "amount": 20,
       "subtotal": "200,00",
@@ -362,6 +266,7 @@
       "id_sale": 2
     },
     {
+      "id": "22ea",
       "id_sale_detail": 2,
       "amount": 10,
       "subtotal": "300,00",
@@ -369,83 +274,94 @@
       "id_sale": 2
     },
     {
+      "id": "b002",
       "id_sale_detail": 3,
       "amount": 14,
       "subtotal": "320,00",
       "id_product": 2,
       "id_sale": 1
     }
-  ], 
-  "accounts_receivable":[{
-    "id_accounts_receivable": 1,
-    "expiration_date": "2025-05-01",
-    "id_sale": 1
-  }
   ],
-  "payment":[
+  "accounts_receivable": [
     {
-    "id_payment": 1,
-    "payment_date": "2025-04-01",
-    "amount_paid": 200,
-    "payment_method": "Credit Card",
-    "id_accounts_receivable": 1
-  },
-  {
-    "id_payment": 2,
-    "payment_date": "2025-04-02",
-    "amount_paid": 120,
-    "payment_method": "Credit Card",
-    "id_accounts_receivable": 1
-  }
+      "id_accounts_receivable": 1,
+      "expiration_date": "2025-05-01",
+      "id_sale": 1,
+      "id": "3c1d"
+    }
   ],
-  "provider":[
+  "payment": [
+    {
+      "id_payment": 1,
+      "payment_date": "2025-04-01",
+      "amount_paid": 200,
+      "payment_method": "Credit Card",
+      "id_accounts_receivable": 1,
+      "id": "cc8a"
+    },
+    {
+      "id_payment": 2,
+      "payment_date": "2025-04-02",
+      "amount_paid": 120,
+      "payment_method": "Credit Card",
+      "id_accounts_receivable": 1,
+      "id": "417b"
+    }
+  ],
+  "provider": [
     {
       "id_provider": 1,
       "name": "Proveedor 1",
-      "number": "04141234567"
+      "number": "04141234567",
+      "id": "f514"
     },
     {
       "id_provider": 2,
       "name": "Proveedor 2",
-      "number": "04141234567"
+      "number": "04141234567",
+      "id": "fa20"
     }
   ],
-  "investment":[
+  "investment": [
     {
       "id_investment": 1,
       "date": "2025-04-01",
       "total": 1000,
-      "id_provider": 1
+      "id_provider": 1,
+      "id": "957a"
     },
     {
       "id_investment": 2,
       "date": "2025-04-12",
       "total": 3500,
-      "id_provider": 1
-    }    
+      "id_provider": 1,
+      "id": "0b9b"
+    }
   ],
-  
-  "investment_detail":[
+  "investment_detail": [
     {
       "id_investment_detail": 1,
       "amount": 20,
       "subtotal": 200,
       "id_product": 5,
-      "id_investment": 1
+      "id_investment": 1,
+      "id": "2e2c"
     },
     {
       "id_investment_detail": 2,
       "amount": 10,
       "subtotal": 300,
       "id_product": 4,
-      "id_investment": 1
+      "id_investment": 1,
+      "id": "88f6"
     },
     {
       "id_investment_detail": 3,
       "amount": 14,
       "subtotal": 320,
       "id_product": 2,
-      "id_investment": 2
+      "id_investment": 2,
+      "id": "e11c"
     }
   ]
 }

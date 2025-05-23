@@ -19,6 +19,7 @@ import {
 } from "@coreui/react";
 import useFetch from "../../hooks/useFetch"; // Importa el hook personalizado
 import "./investment.scss";
+import { fetchItems, createItem, updateItem, deleteItem, fetchInvestmentDetails, fetchProducts, fetchProviders } from "../../services/api";
 
 const Investment = () => {
   const columns = [

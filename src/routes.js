@@ -64,7 +64,6 @@ const Widgets = React.lazy(() => import('./views/widgets/Widgets'))
 const Login = React.lazy(() => import('./views/pages/login/Login'))
 
 const routes = [
-  { path: '/Sales', name: 'Sales', element: Sales },
   { path: '/investment', name: 'investment', element: investment },
   { path: '/providers', name: 'Providers', element: providers },
   { path: '/', exact: true, name: 'Home' },
