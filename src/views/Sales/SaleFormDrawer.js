@@ -178,8 +178,6 @@ const SaleFormDrawer = ({ visible, onClose, selectedProducts, setSelectedProduct
             />
 
             <h6 className="mb-2">Productos Seleccionados</h6>
-            <small>Stock: {p.stock}</small>
-
             <CListGroup className="mb-3">
               {selectedProducts.length === 0 && (
                 <p className="text-muted">No hay productos seleccionados.</p>
@@ -189,7 +187,6 @@ const SaleFormDrawer = ({ visible, onClose, selectedProducts, setSelectedProduct
                   <div className="d-flex justify-content-between align-items-center">
                     <div>
                       {p.description} <br />
-                      <small>${p.price_sale} x</small>
                     </div>
                     <div className="d-flex align-items-center">
                       <CFormInput
