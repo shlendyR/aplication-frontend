@@ -29,8 +29,9 @@ const FormAccountReceivable = ({ visible, onClose, sale }) => {
     const payment_method = sale.payment_method || 'Cash'
 
     try {
+      const backendUrl = import.meta.env.VITE_API_URL
       // Paso 1: Guardar en accounts_receivable
-      const resAccount = await fetch('http://localhost:8000/accounts_receivable', {
+      const resAccount = await fetch(`${backendUrl}/accounts_receivable`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -44,7 +45,7 @@ const FormAccountReceivable = ({ visible, onClose, sale }) => {
       const newAccount = await resAccount.json() // contiene { id, id_sale, expiration_date }
 
       // Paso 2: Guardar en payment usando el ID generado en accounts_receivable
-      const resPayment = await fetch('http://localhost:8000/payment', {
+      const resPayment = await fetch(`${backendUrl}/payment`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

@@ -29,8 +29,9 @@ const NewSale = () => {
   // NUEVO: carrito con productos seleccionados
   const [selectedProducts, setSelectedProducts] = useState([])
 
-  const { data: categoriesData } = useFetch('http://localhost:8000/category')
-  const { data: productsData } = useFetch('http://localhost:8000/product')
+  const API_URL = import.meta.env.VITE_API_URL
+  const { data: categoriesData } = useFetch(`${API_URL}/category`)
+  const { data: productsData } = useFetch(`${API_URL}/product`)
 
   useEffect(() => {
     if (categoriesData && productsData) {

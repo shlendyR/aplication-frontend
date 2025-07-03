@@ -21,8 +21,9 @@ const ModalPayPayment = ({ visible, onClose, accountReceivableId, onPaymentSaved
 
   const handleSave = async (paymentData) => {
     try {
+      const backendUrl = import.meta.env.VITE_API_URL
       // 1. Guardar nuevo pago
-      const res = await fetch('http://localhost:8000/payment', {
+      const res = await fetch(`${backendUrl}/payment`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(paymentData),
@@ -31,7 +32,7 @@ const ModalPayPayment = ({ visible, onClose, accountReceivableId, onPaymentSaved
       if (!res.ok) throw new Error('Error al guardar el pago')
 
       // 2. Obtener pagos existentes
-      const paymentsRes = await fetch('http://localhost:8000/payment')
+      const paymentsRes = await fetch(`${backendUrl}/payment`)
       const allPayments = await paymentsRes.json()
 
       const relatedPayments = allPayments.filter(
@@ -42,17 +43,17 @@ const ModalPayPayment = ({ visible, onClose, accountReceivableId, onPaymentSaved
 
       // 3. Obtener cuenta por cobrar
       const accRes = await fetch(
-        `http://localhost:8000/accounts_receivable/${paymentData.id_accounts_receivable}`,
+        `${backendUrl}/accounts_receivable/${paymentData.id_accounts_receivable}`,
       )
       const account = await accRes.json()
 
       // 4. Obtener venta asociada
-      const saleRes = await fetch(`http://localhost:8000/sale/${account.id_sale}`)
+      const saleRes = await fetch(`${backendUrl}/sale/${account.id_sale}`)
       const sale = await saleRes.json()
 
       // 5. Si ya está pagado completo → actualizar venta
       if (totalPaid >= sale.total) {
-        await fetch(`http://localhost:8000/sale/${sale.id}`, {
+        await fetch(`${backendUrl}/sale/${sale.id}`, {
           method: 'PATCH',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ status: 'COMPLETED' }),

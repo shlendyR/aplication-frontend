@@ -60,12 +60,13 @@ const AccountReceivable = () => {
 
   const fetchData = async () => {
     try {
+      const backendUrl = import.meta.env.VITE_API_URL;
       const [saleRes, userRes, roleRes, accountRes, paymentRes] = await Promise.all([
-        fetch('http://localhost:8000/sale'),
-        fetch('http://localhost:8000/user'),
-        fetch('http://localhost:8000/role'),
-        fetch('http://localhost:8000/accounts_receivable'),
-        fetch('http://localhost:8000/payment'),
+        fetch(`${backendUrl}/sale`),
+        fetch(`${backendUrl}/user`),
+        fetch(`${backendUrl}/role`),
+        fetch(`${backendUrl}/accounts_receivable`),
+        fetch(`${backendUrl}/payment`),
       ])
 
       const [sales, users, rolesData, accounts, payments] = await Promise.all([

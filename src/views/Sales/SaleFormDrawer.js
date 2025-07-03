@@ -57,7 +57,8 @@ const SaleFormDrawer = ({ visible, onClose, selectedProducts, setSelectedProduct
     }
 
     try {
-      const saleResponse = await fetch('http://localhost:8000/sale', {
+      const backendUrl = import.meta.env.VITE_API_URL;
+      const saleResponse = await fetch(`${backendUrl}/sale`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(sale),
@@ -68,7 +69,7 @@ const SaleFormDrawer = ({ visible, onClose, selectedProducts, setSelectedProduct
       const newSale = await saleResponse.json()
 
       for (const product of selectedProducts) {
-        await fetch('http://localhost:8000/sale_detail', {
+        await fetch(`${backendUrl}/sale_detail`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -101,7 +102,8 @@ const SaleFormDrawer = ({ visible, onClose, selectedProducts, setSelectedProduct
 
   const handleAccountReceivableSave = async (data) => {
     try {
-      const res = await fetch('http://localhost:8000/accounts_receivable', {
+      const backendUrl = import.meta.env.VITE_API_URL;
+      const res = await fetch(`${backendUrl}/accounts_receivable`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

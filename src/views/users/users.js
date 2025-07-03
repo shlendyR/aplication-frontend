@@ -47,9 +47,9 @@ const Users = () => {
     id_role: '',
     password: '',
   })
-
-  const { data, loading: loading, error: error } = useFetch('http://localhost:8000/user')
-  const { data: roles } = useFetch('http://localhost:8000/role')
+  const backendUrl = import.meta.env.VITE_API_URL
+  const { data, loading: loading, error: error } = useFetch(`${backendUrl}/user`)
+  const { data: roles } = useFetch(`${backendUrl}/role`)
 
   useEffect(() => {
     if (data) {
@@ -84,7 +84,7 @@ const Users = () => {
 
   const handleDelete = async (userId) => {
     try {
-      const response = await fetch(`http://localhost:8000/user/${userId}`, {
+      const response = await fetch(`${backendUrl}/user/${userId}`, {
         method: 'DELETE',
       })
       if (!response.ok) {
@@ -117,7 +117,7 @@ const Users = () => {
   // Función la actualización de un usuario
   const handleUpdate = async () => {
     try {
-      const response = await fetch(`http://localhost:8000/user/${selectedUser.id}`, {
+      const response = await fetch(`${backendUrl}/user/${selectedUser.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -145,7 +145,7 @@ const Users = () => {
   const handleAdd = async () => {
     const newUser = { ...addFormData }
     try {
-      const response = await fetch('http://localhost:800/user', {
+      const response = await fetch(`${backendUrl}/user`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
