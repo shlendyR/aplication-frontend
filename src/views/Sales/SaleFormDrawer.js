@@ -25,9 +25,17 @@ const SaleFormDrawer = ({ visible, onClose, selectedProducts, setSelectedProduct
   const [savedSaleData, setSavedSaleData] = useState(null)
 
   const handleQuantityChange = (index, newQty) => {
-    const updated = [...selectedProducts]
-    updated[index].amount = Math.max(1, parseInt(newQty) || 1)
-    updated[index].subtotal = updated[index].amount * updated[index].price_sale
+    const updated = selectedProducts.map((product, i) => {
+      if (i === index) {
+        const updatedAmount = Math.max(1, parseInt(newQty) || 1)
+        return {
+          ...product,
+          amount: updatedAmount,
+          subtotal: updatedAmount * product.price_sale,
+        }
+      }
+      return product
+    })
     setSelectedProducts(updated)
   }
 
@@ -170,6 +178,8 @@ const SaleFormDrawer = ({ visible, onClose, selectedProducts, setSelectedProduct
             />
 
             <h6 className="mb-2">Productos Seleccionados</h6>
+            <small>Stock: {p.stock}</small>
+
             <CListGroup className="mb-3">
               {selectedProducts.length === 0 && (
                 <p className="text-muted">No hay productos seleccionados.</p>

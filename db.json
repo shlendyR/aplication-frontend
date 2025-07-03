@@ -358,6 +358,33 @@
       "status": "PENDING",
       "payment_method": "CASH",
       "id_user": "5c35"
+    },
+    {
+      "id": "8dcb",
+      "date": "2025-07-03T00:50:00.811Z",
+      "total": 120,
+      "description": "",
+      "status": "PENDING",
+      "payment_method": "Cash",
+      "id_user": "5c35"
+    },
+    {
+      "id": "8ead",
+      "date": "2025-07-03T00:51:46.337Z",
+      "total": 160,
+      "description": "",
+      "status": "COMPLETED",
+      "payment_method": "Cash",
+      "id_user": "5c35"
+    },
+    {
+      "id": "771d",
+      "date": "2025-07-03T01:51:58.560Z",
+      "total": 120,
+      "description": "",
+      "status": "PENDING",
+      "payment_method": "Cash",
+      "id_user": "5c35"
     }
   ],
   "sale_detail": [
@@ -578,6 +605,41 @@
       "subtotal": 40,
       "id_product": "53c7",
       "id_sale": "bdc3"
+    },
+    {
+      "id": "532b",
+      "amount": 1,
+      "subtotal": 40,
+      "id_product": "5e13",
+      "id_sale": "8dcb"
+    },
+    {
+      "id": "16e0",
+      "amount": 1,
+      "subtotal": 40,
+      "id_product": "ab36",
+      "id_sale": "8dcb"
+    },
+    {
+      "id": "487d",
+      "amount": 4,
+      "subtotal": 160,
+      "id_product": "53c7",
+      "id_sale": "8ead"
+    },
+    {
+      "id": "4fb9",
+      "amount": 1,
+      "subtotal": 40,
+      "id_product": "5e13",
+      "id_sale": "771d"
+    },
+    {
+      "id": "af13",
+      "amount": 2,
+      "subtotal": 80,
+      "id_product": "53c7",
+      "id_sale": "771d"
     }
   ],
   "expense_category": [
@@ -811,6 +873,21 @@
       "id": "5bc8",
       "id_sale": "bdc3",
       "expiration_date": "2025-07-17"
+    },
+    {
+      "id": "9f58",
+      "id_sale": "8dcb",
+      "expiration_date": "2025-07-10"
+    },
+    {
+      "id": "8264",
+      "id_sale": "8ead",
+      "expiration_date": "2025-07-10"
+    },
+    {
+      "id": "38e9",
+      "id_sale": "771d",
+      "expiration_date": "2025-07-18"
     }
   ],
   "payment": [
@@ -1104,6 +1181,34 @@
       "amount_paid": 20,
       "payment_date": "2025-07-02",
       "payment_method": "CASH"
+    },
+    {
+      "id": "bffa",
+      "id_accounts_receivable": "9f58",
+      "amount_paid": 6,
+      "payment_date": "2025-07-03",
+      "payment_method": "Cash"
+    },
+    {
+      "id": "3704",
+      "id_accounts_receivable": "8264",
+      "amount_paid": 0.01,
+      "payment_date": "2025-07-03",
+      "payment_method": "Cash"
+    },
+    {
+      "id": "eaf8",
+      "id_accounts_receivable": "8264",
+      "amount_paid": 160,
+      "payment_method": "CASH",
+      "payment_date": "2025-07-03"
+    },
+    {
+      "id": "cb69",
+      "id_accounts_receivable": "38e9",
+      "amount_paid": 20,
+      "payment_date": "2025-07-03",
+      "payment_method": "Cash"
     }
   ]
 }
